@@ -10,14 +10,12 @@
 							singleContainerFullSize="false" ariaLabelledBy="Title1">
 							<f:content>
 								<Label text="Device Category"/>
-								<Select forceSelection="false" selectedKey="{/ProductCollection/1/ProductId}"
-									items="{ path: '/ProductCollection', sorter: { path: 'Name' } }">
-									<core:Item key="{ProductId}" text="{Name}"/>
+								<Select items="{ path: 'categories>/'}" change="onCategorySelect">
+									<core:Item key="{categories>id}" text="{categories>description}"/>
 								</Select>
 								<Label text="Device Type"/>
-								<Select forceSelection="false" selectedKey="{/ProductCollection/1/ProductId}"
-									items="{ path: '/ProductCollection', sorter: { path: 'Name' } }">
-									<core:Item key="{ProductId}" text="{Name}"/>
+								<Select items="{ path: 'deviceTypes>/'}" change="onTypeSelect">
+									<core:Item key="{deviceTypes>guid}" text="{deviceTypes>description}"/>
 								</Select>
 							</f:content>
 						</f:SimpleForm>
