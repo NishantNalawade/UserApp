@@ -1,0 +1,44 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="userapp.UserApp.controller.Settings"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:f="sap.ui.layout.form">
+	<App>
+		<pages>
+			<Page title="Settings" showNavButton="true" navButtonPress="navBack">
+				<content>
+					<VBox class="sapUiSmallMargin">
+						<f:SimpleForm id="settingsForm" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+							adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
+							singleContainerFullSize="false" ariaLabelledBy="Title1">
+							<f:content>
+								<Label text="Device Category"/>
+								<Select forceSelection="false" selectedKey="{/ProductCollection/1/ProductId}"
+									items="{ path: '/ProductCollection', sorter: { path: 'Name' } }">
+									<core:Item key="{ProductId}" text="{Name}"/>
+								</Select>
+								<Label text="Device Type"/>
+								<Select forceSelection="false" selectedKey="{/ProductCollection/1/ProductId}"
+									items="{ path: '/ProductCollection', sorter: { path: 'Name' } }">
+									<core:Item key="{ProductId}" text="{Name}"/>
+								</Select>
+							</f:content>
+						</f:SimpleForm>
+						<f:SimpleForm id="propertiesFrom" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4"
+							labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
+							singleContainerFullSize="false" ariaLabelledBy="Title1" content="{ path: '/devices', sorter: { path: 'uid' } }">
+							<f:toolbar>
+								<Toolbar>
+									<Title text="Properties" level="H4" titleStyle="H4"/>
+									<ToolbarSpacer/>
+								</Toolbar>
+							</f:toolbar>
+							<f:content>
+								<StandardListItem title="{deviceName}" description="{tenantName}" type="Navigation" icon="{path:'deviceType',formatter:'.iconFormatter'}"
+									iconDensityAware="false" iconInset="false" press="onDialogOpen"/>
+							</f:content>
+						</f:SimpleForm>
+						<Button width="100%" type="Emphasized" text="Save" class="sapUiTinyMarginTop"/>
+					</VBox>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

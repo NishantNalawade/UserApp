@@ -1,0 +1,27 @@
+<mvc:View controllerName="userapp.UserApp.controller.Home" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc"
+	displayBlock="true" xmlns="sap.m" xmlns:f="sap.ui.layout.form">
+	<App id="idAppControl">
+		<pages>
+			<Page title="{i18n>title}">
+				<content>
+					<VBox class="sapUiSmallMargin sapUiMediumMarginTop">
+						<f:SimpleForm id="proxyFrom1" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+							adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
+							singleContainerFullSize="false" ariaLabelledBy="Title1">
+							<f:toolbar>
+								<Toolbar id="Tb2">
+									<Title text="Connected Goods" level="H4" titleStyle="H4"/>
+								</Toolbar>
+							</f:toolbar>
+							<f:content>
+								<Label text="Tenant ID" />
+								<Input value="{tenantId}" id="inputTenant"/>
+								<Button type="Emphasized" text="{i18n>go}" class="sapUiTinyMarginTop" press="onGoDevice"/>
+							</f:content>
+						</f:SimpleForm>
+					</VBox>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

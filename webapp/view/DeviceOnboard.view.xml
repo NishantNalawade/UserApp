@@ -1,0 +1,41 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="userapp.UserApp.controller.DeviceOnboard"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:f="sap.ui.layout.form">
+	<App>
+		<pages>
+			<Page title="Onboard Device" showNavButton="true" navButtonPress="navBack">
+				<content>
+					<VBox>
+						<f:SimpleForm editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+							adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
+							singleContainerFullSize="false">
+							<f:toolbar>
+								<Toolbar >
+									<Title text="Device Details" level="H4" titleStyle="H4"/>
+									<ToolbarSpacer/>
+									<Button icon="sap-icon://bar-code" text="Scan" press="onScan"/>
+								</Toolbar>
+							</f:toolbar>
+							<f:content>
+								<Label text="Device Name"/>
+								<Input value="{QRdata>/devicename}" />
+								<Label text="Device ID"/>
+								<Input value="{QRdata>/deviceid}" />
+								<Label text="Device GUID"/>
+								<Input value="{QRdata>/deviceid}" />
+							</f:content>
+						</f:SimpleForm>
+						<f:SimpleForm title="Properties" editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4"
+							labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
+							singleContainerFullSize="false" content="{ path: 'QRdata>/data/'}">
+							<f:content>
+								<Label text="Device Name"/>
+								<Input value="hello" editable="false"/>
+							</f:content>
+						</f:SimpleForm>
+						<Button width="100%" type="Emphasized" text="Onboard" class="sapUiTinyMarginTop"/>
+					</VBox>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

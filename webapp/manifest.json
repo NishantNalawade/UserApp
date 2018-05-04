@@ -1,0 +1,161 @@
+{
+	"_version": "1.8.0",
+	"sap.app": {
+		"id": "userapp.UserApp",
+		"type": "application",
+		"i18n": "i18n/i18n.properties",
+		"applicationVersion": {
+			"version": "1.0.0"
+		},
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"resources": "resources.json",
+		"ach": "ach",
+		"sourceTemplate": {
+			"id": "ui5template.basicSAPUI5ApplicationProject",
+			"version": "1.40.12"
+		}
+	},
+	"sap.ui": {
+		"technology": "UI5",
+		"icons": {
+			"icon": "",
+			"favIcon": "",
+			"phone": "",
+			"phone@2": "",
+			"tablet": "",
+			"tablet@2": ""
+		},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		},
+		"supportedThemes": [
+			"sap_hcb",
+			"sap_belize"
+		]
+	},
+	"sap.ui5": {
+		"rootView": {
+			"viewName": "userapp.UserApp.view.Home",
+			"type": "XML"
+		},
+		"dependencies": {
+			"minUI5Version": "1.30.0",
+			"libs": {
+				"sap.ui.layout": {},
+				"sap.ui.core": {},
+				"sap.m": {}
+			}
+		},
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "userapp.UserApp.i18n.i18n"
+				}
+			}
+		},
+		"resources": {
+			"css": [{
+				"uri": "css/style.css"
+			}],
+			"js":[
+				{"uri":"js/grid.js"},
+				{"uri":"js/version.js"},
+				{"uri":"js/detector.js"},
+				{"uri":"js/formatinf.js"},
+				{"uri":"js/errorlevel.js"},
+				{"uri":"js/bitmat.js"},
+				{"uri":"js/datablock.js"},
+				{"uri":"js/bmparser.js"},
+				{"uri":"js/datamask.js"},
+				{"uri":"js/rsdecoder.js"},
+				{"uri":"js/gf256poly.js"},
+				{"uri":"js/gf256.js"},
+				{"uri":"js/decoder.js"},
+				{"uri":"js/qrcode.js"},
+				{"uri":"js/findpat.js"},
+				{"uri":"js/alignpat.js"},
+				{"uri":"js/databr.js"}
+				]
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"viewType": "XML",
+				"async": true,
+				"viewPath": "userapp.UserApp.view",
+				"controlAggregation": "pages",
+				"controlId": "idAppControl",
+				"clearControlAggregation": false
+			},
+			"routes": [{
+				"name": "DeviceManager",
+				"pattern": "{tenantId}/devices",
+				"target": [
+					"DeviceManager"
+				]
+			}, {
+				"name": "DeviceDetails",
+				"pattern": "{tenantId}/devices/{deviceId}",
+				"target": [
+					"DeviceDetails"
+				]
+			}, {
+				"name": "DeviceOnboard",
+				"pattern": "{tenantId}/onboard",
+				"target": [
+					"DeviceOnboard"
+				]
+			}, {
+				"name": "Settings",
+				"pattern": "settings",
+				"target": [
+					"Settings"
+				]
+			}],
+			"targets": {
+				"DeviceManager": {
+					"viewType": "XML",
+					"viewName": "DeviceManager",
+					"routerClass": "sap.m.routing.Router",
+					"async": true,
+					"viewPath": "userapp.UserApp.view",
+					"controlAggregation": "pages",
+					"controlId": "idAppControl",
+					"clearControlAggregation": false
+				},
+				"DeviceDetails": {
+					"viewType": "XML",
+					"viewName": "DeviceDetails",
+					"routerClass": "sap.m.routing.Router",
+					"async": true,
+					"viewPath": "userapp.UserApp.view",
+					"controlAggregation": "pages",
+					"controlId": "idAppControl",
+					"clearControlAggregation": false
+				},
+				"DeviceOnboard": {
+					"viewType": "XML",
+					"viewName": "DeviceOnboard",
+					"routerClass": "sap.m.routing.Router",
+					"async": true,
+					"viewPath": "userapp.UserApp.view",
+					"controlAggregation": "pages",
+					"controlId": "idAppControl",
+					"clearControlAggregation": false
+				},
+				"Settings": {
+					"viewType": "XML",
+					"viewName": "Settings"
+				}
+			}
+		}
+	}
+}
