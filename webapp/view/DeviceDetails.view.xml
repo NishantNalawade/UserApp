@@ -2,33 +2,40 @@
 	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:f="sap.ui.layout.form">
 	<App>
 		<pages>
-			<Page title="{deviceDetails>/devicename}" id="detailsPage" showNavButton="true" navButtonPress="navBack">
+			<Page title="Details" id="detailsPage" showNavButton="true" navButtonPress="navBack">
 				<content>
 					<VBox>
 						<f:SimpleForm editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12"
 							adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
 							singleContainerFullSize="false">
 							<f:content>
-								<Label text="Device Name"/>
-								<Input value="{deviceDetails>/devicename}" editable="false"/>
 								<Label text="Device ID"/>
 								<Input value="{deviceDetails>/deviceid}" editable="false"/>
-								<Label text="Device GUID"/>
-								<Input value="{deviceDetails>/deviceid}" editable="false"/>
+								<Label text="Device Type GUID"/>
+								<Input value="{deviceDetails>/deviceGuid}" editable="false"/>
 								<Label text="Device Category"/>
-								<Input value="{deviceDetails>/deviceType}" editable="false"/>
+								<Input value="{deviceDetails>/category}" editable="false"/>
 								<Label text="Device Type"/>
-								<Input value="{deviceDetails>/deviceType}" editable="false"/>
+								<Input value="{deviceDetails>/deviceTypeGuid}" editable="false"/>
 							</f:content>
 						</f:SimpleForm>
-						<f:SimpleForm title="Properties" editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4"
-							labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
-							singleContainerFullSize="false" content="{ path: 'deviceDetails>/data/'}">
-							<f:content>
-								<Label text="Device Name"/>
-								<Input value="hello" editable="false"/>
-							</f:content>
-						</f:SimpleForm>
+						<Toolbar id="Tb2">
+							<Title text="Properties" level="H4" titleStyle="H4"/>
+							<ToolbarSpacer/>
+						</Toolbar>
+						<VBox items="{ path: 'deviceDetails>/'}" class="sapUiSmallMargin">
+							<items>
+								<Input value="{data}" editable="false"/>
+							</items>
+						</VBox>
+						<!--<f:SimpleForm title="Properties" editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4"-->
+						<!--	labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"-->
+						<!--	singleContainerFullSize="false" content="{ path: 'deviceDetails>/data/'}">-->
+						<!--	<f:content>-->
+						<!--		<Label text="Device Name"/>-->
+						<!--		<Input value="hello" editable="false"/>-->
+						<!--	</f:content>-->
+						<!--</f:SimpleForm>-->
 						<Button width="100%" type="Emphasized" text="Save" class="sapUiTinyMarginTop"/>
 					</VBox>
 				</content>
