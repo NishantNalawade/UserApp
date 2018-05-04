@@ -1,7 +1,8 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
-	"sap/ui/model/json/JSONModel"
-], function(Controller,JSONModel) {
+	"sap/ui/model/json/JSONModel",
+	"sap/m/MessageBox"
+], function(Controller,JSONModel,MessageBox) {
 	"use strict";
 
 	return Controller.extend("userapp.UserApp.controller.DeviceManager", {
@@ -28,7 +29,9 @@ sap.ui.define([
 				deviceId:sDeviceId
 			});
 		},
-
+		onLogout:function(){
+			
+		},
 		_onRouteMatched: function(oEvent) {
 			this.sTenantId = oEvent.getParameter("arguments").tenantId;
 			this._getTenantDetail(this.sTenantId);

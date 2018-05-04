@@ -15,7 +15,9 @@
 							</f:toolbar>
 							<f:content>
 								<Label text="Tenant ID" />
-								<Input value="{tenantId}" id="inputTenant"/>
+								<Input value="" id="inputTenant"/>
+								<Label text="User ID" />
+								<Input value="" id="inputID"/>
 								<Button type="Emphasized" text="{i18n>go}" class="sapUiTinyMarginTop" press="onGoDevice"/>
 							</f:content>
 						</f:SimpleForm>

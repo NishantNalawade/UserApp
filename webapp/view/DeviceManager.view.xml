@@ -2,10 +2,20 @@
 	xmlns:html="http://www.w3.org/1999/xhtml">
 	<App>
 		<pages>
-			<Page title="{tenant>/tenantname}" id="devicePage">
-				<headerContent>
-					<core:Icon class="iconPadding" src="sap-icon://action-settings" press="navSettings"/>
-				</headerContent>
+			<Page id="devicePage">
+				<customHeader>
+					<Bar>
+						<contentLeft>
+							<core:Icon class="iconPadding" src="sap-icon://log" press="onLogout"/>
+						</contentLeft>
+						<contentMiddle>
+							<Title text="{tenant>/tenantname}" />
+						</contentMiddle>
+						<contentRight>
+							<core:Icon class="iconPadding" src="sap-icon://action-settings" press="navSettings"/>
+						</contentRight>
+					</Bar>
+				</customHeader>
 				<content>
 					<List id="deviceList" items="{ path: 'devices>/', sorter: { path: 'uid' } }">
 						<headerToolbar>
