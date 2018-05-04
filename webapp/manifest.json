@@ -129,7 +129,8 @@
 					"viewPath": "userapp.UserApp.view",
 					"controlAggregation": "pages",
 					"controlId": "idAppControl",
-					"clearControlAggregation": false
+					"clearControlAggregation": false,
+					"transition": "fade"
 				},
 				"DeviceDetails": {
 					"viewType": "XML",
