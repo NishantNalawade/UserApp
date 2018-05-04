@@ -6,6 +6,40 @@ sap.ui.define([
 	"use strict";
 
 	return Controller.extend("userapp.UserApp.controller.DeviceOnboard", {
+		oDeviceModel:new JSONModel(),
+		sTenantId:null,
+		sDeviceId:null,
+		onInit:function(){
+				this.getView().setModel(this.oDeviceModel,"QRdata");
+				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+			    oRouter.getRoute("DeviceManager").attachPatternMatched(this._onRouteMatched, this);
+		},
+		_onRouteMatched: function(oEvent) {
+			this.sTenantId = oEvent.getParameter("arguments").tenantId;
+			this.sDeviceId = oEvent.getParameter("arguments").deviceId;
+			
+		},
+		onBoardDevice:function(oEvent){
+			
+		     var that=this;     
+		     that.oDeviceModel.getData().data=JSON.stringify(that.oDeviceModel.getData().data);
+			var sUrl = "/gatewaytest/tenants/" + this.sTenantId + "/devices/" + this.sDeviceId;
+			$.ajax({
+				url: sUrl,
+				method: 'POST',
+				crossDomain: true,
+				data:JSON.stringify(that.oDeviceModel.getData()),
+				success: function(data) {
+					alert("success");
+				},
+				error: function(e) {
+					alert(e);
+					//error code
+				}
+			});
+			
+			
+		},
 		navBack: function() {
 			var oHistory = History.getInstance();
 			var sPreviousHash = oHistory.getPreviousHash();
@@ -45,10 +79,22 @@ sap.ui.define([
 				if (data !== "error decoding QR Code") {
 					this.codeScanned = true;
 					that._oScannedInspLot = data;
-					//console.log(data);//Message Pops up for scanned Value
-					var oJsonModel=new JSONModel();
-					oJsonModel.setJSON(data);
-					this.getView().setModel(oJsonModel,"QRdata");
+					
+					that.oDeviceModel.setJSON(data);
+				//	this.getView().setModel(that.oDeviceModel,"QRdata");
+				var props=this.oDeviceModel.getData().data;
+		    	var form=this.getView().byId("propertiesList");
+		    	form.removeAllContent();
+			for(var i in props)
+			{
+				
+				if(props.hasOwnProperty(i)){
+				var Label=new sap.m.Label({"text":i});
+				var Input=new sap.m.Input({"value":props[i]});
+				form.addContent(Label);   
+				form.addContent(Input);
+				}
+			}
 					dialog.close();
 				}
 			}.bind(this);

@@ -16,23 +16,21 @@
 								</Toolbar>
 							</f:toolbar>
 							<f:content>
-								<Label text="Device Name"/>
-								<Input value="{QRdata>/deviceid}" />
 								<Label text="Device ID"/>
 								<Input value="{QRdata>/deviceid}" />
-								<Label text="Device GUID"/>
-								<Input value="{QRdata>/deviceid}" />
+							    <Label text="UID"/>
+								<Input value="{QRdata>/uid}" />
+								<Label text="Device Type"/>
+								<Input value="{QRdata>/deviceType}" />
 							</f:content>
 						</f:SimpleForm>
-						<f:SimpleForm title="Properties" editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4"
+						<f:SimpleForm id="propertiesList" title="Properties" editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4"
 							labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
-							singleContainerFullSize="false" content="{ path: 'QRdata>/data/'}">
+							singleContainerFullSize="false" >
 							<f:content>
-								<Label text="Device Name"/>
-								<Input value="hello" editable="false"/>
 							</f:content>
 						</f:SimpleForm>
-						<Button width="100%" type="Emphasized" text="Onboard" class="sapUiTinyMarginTop"/>
+						<Button width="100%" type="Emphasized" text="Onboard" class="sapUiTinyMarginTop" press="onBoardDevice"/>
 					</VBox>
 				</content>
 			</Page>
