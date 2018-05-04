@@ -25,7 +25,7 @@ sap.ui.define([
 			var sTenantId = oEvent.getParameter("arguments").tenantId;
 			var sDeviceId = oEvent.getParameter("arguments").deviceId;
 			this._getDeviceDetail(sTenantId, sDeviceId);
-			this.getView().byId("detailsPage").setTitle(sDeviceId);
+			//this.getView().byId("detailsPage").setTitle(sDeviceId);
 		},
 		_getDeviceDetail: function(sTenantId, sDeviceId) {
 			var sUrl = "/gatewaytest/tenants/" + sTenantId + "/devices/" + sDeviceId;

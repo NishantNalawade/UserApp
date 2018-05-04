@@ -1,8 +1,9 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/model/json/JSONModel",
-	"sap/m/MessageBox"
-], function(Controller,JSONModel,MessageBox) {
+	"sap/m/MessageBox",
+	"sap/ui/model/Filter"
+], function(Controller,JSONModel,MessageBox,Filter) {
 	"use strict";
 
 	return Controller.extend("userapp.UserApp.controller.DeviceManager", {
@@ -84,15 +85,30 @@ sap.ui.define([
 		},
 		iconFormatter: function(deviceType) {
 			var icon = "sap-icon://product";
-			if (deviceType === "cooler") {
+			if (deviceType === "Cooler" || deviceType === "Fridge") {
 				icon = "sap-icon://fridge";
-			} else if (deviceType === "dispenser") {
+			} else if (deviceType === "Dispenser") {
 				icon = "sap-icon://measuring-point";
-			} else if (deviceType === "container") {
+			} else if (deviceType === "Container") {
 				icon = "sap-icon://lab";
 			}
 			return icon;
 
+		},
+		onSearch: function(oEvt) {
+
+			// add filter for search
+			var aFilters = [];
+			var sQuery = oEvt.getSource().getValue();
+			if (sQuery && sQuery.length > 0) {
+				var filter = new Filter("name", sap.ui.model.FilterOperator.Contains, sQuery);
+				aFilters.push(filter);
+			}
+
+			// update list binding
+			var list = this.getView().byId("deviceList");
+			var binding = list.getBinding("items");
+			binding.filter(aFilters, "Application");
 		}
 		// openPopOver: function (oEvent) {
 		// 	if (!this._oPopover) {

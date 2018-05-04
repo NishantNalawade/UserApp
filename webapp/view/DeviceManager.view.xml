@@ -31,7 +31,7 @@
 							</Toolbar>
 						</headerToolbar>
 						<items>
-							<StandardListItem title="{devices>deviceid}" description="{devices>uid}" type="Navigation" icon="{path:'devices>deviceType',formatter:'.iconFormatter'}" press="navToDetails"/>
+							<StandardListItem title="{devices>deviceid}" description="{devices>uid}" type="Navigation" icon="{path:'devices>category',formatter:'.iconFormatter'}" press="navToDetails"/>
 						</items>
 					</List>
 				</content>

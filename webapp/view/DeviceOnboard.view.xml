@@ -20,7 +20,7 @@
 								<Input value="{QRdata>/deviceid}" />
 								<Label text="Device ID"/>
 								<Input value="{QRdata>/deviceid}" />
-								<Label text="Device GUID"/>
+								<Label text="Device Type GUID"/>
 								<Input value="{QRdata>/deviceid}" />
 							</f:content>
 						</f:SimpleForm>
