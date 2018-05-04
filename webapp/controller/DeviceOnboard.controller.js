@@ -24,6 +24,8 @@ sap.ui.define([
 			});
 			var button = new sap.m.Button({
 				text: "Cancel",
+				width:"100%",
+				type:"Reject",
 				press: function() {
 					dialog.close();
 				}
