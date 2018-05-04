@@ -1,25 +1,28 @@
-<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="userapp.UserApp.controller.DeviceManager"
-	xmlns:html="http://www.w3.org/1999/xhtml">
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:html="http://www.w3.org/1999/xhtml" controllerName="userapp.UserApp.controller.DeviceManager">
 	<App>
 		<pages>
-			<Page id="devicePage">
-				<customHeader>
-					<Bar>
-						<contentLeft>
-							<core:Icon class="iconPadding" src="sap-icon://log" press="onLogout"/>
-						</contentLeft>
-						<contentMiddle>
-							<Title text="{tenant>/tenantname}" />
-						</contentMiddle>
-						<contentRight>
-							<core:Icon class="iconPadding" src="sap-icon://action-settings" press="navSettings"/>
-						</contentRight>
-					</Bar>
-				</customHeader>
+			<Page title="{tenant>/tenantname}" id="devicePage" navButtonPress="navToDetails">
+				<headerContent>
+					<core:Icon class="iconPadding" src="sap-icon://action-settings" press="navSettings"/>
+					<core:Icon class="iconPadding" src="sap-icon://log" press="onLogout"/>
+				</headerContent>
+				<!--<customHeader>-->
+				<!--	<Bar>-->
+				<!--		<contentLeft>-->
+				<!--			<core:Icon class="iconPadding" src="sap-icon://log" press="onLogout"/>-->
+				<!--		</contentLeft>-->
+				<!--		<contentMiddle>-->
+				<!--			<Title text="{tenant>/tenantname}"/>-->
+				<!--		</contentMiddle>-->
+				<!--		<contentRight>-->
+				<!--			<core:Icon class="iconPadding" src="sap-icon://action-settings" press="navSettings"/>-->
+				<!--		</contentRight>-->
+				<!--	</Bar>-->
+				<!--</customHeader>-->
 				<content>
 					<List id="deviceList" items="{ path: 'devices>/', sorter: { path: 'uid' } }">
 						<headerToolbar>
-							<Toolbar >
+							<Toolbar>
 								<content>
 									<SearchField liveChange="onSearch" width="100%"/>
 									<ToolbarSpacer/>
@@ -28,8 +31,7 @@
 							</Toolbar>
 						</headerToolbar>
 						<items>
-							<StandardListItem title="{devices>devicename}" description="{devices>uid}" type="Navigation"
-								icon="{path:'devices>deviceType',formatter:'.iconFormatter'}" press="navToDetails"/>
+							<StandardListItem title="{devices>deviceid}" description="{devices>uid}" type="Navigation" icon="{path:'devices>deviceType',formatter:'.iconFormatter'}" press="navToDetails"/>
 						</items>
 					</List>
 				</content>

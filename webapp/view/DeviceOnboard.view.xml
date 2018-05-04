@@ -17,7 +17,7 @@
 							</f:toolbar>
 							<f:content>
 								<Label text="Device Name"/>
-								<Input value="{QRdata>/devicename}" />
+								<Input value="{QRdata>/deviceid}" />
 								<Label text="Device ID"/>
 								<Input value="{QRdata>/deviceid}" />
 								<Label text="Device GUID"/>

@@ -30,7 +30,22 @@ sap.ui.define([
 			});
 		},
 		onLogout:function(){
-			
+			var that=this;
+			MessageBox.confirm(
+				"Do you want to change tenant?", {
+					styleClass: "sapUiSizeCompact",
+					onClose: function(oAction) {
+						if(oAction==="OK"){
+							jQuery.sap.require("jquery.sap.storage");
+							var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
+							oStorage.clear();
+							var oRouter = sap.ui.core.UIComponent.getRouterFor(that);
+							oRouter.navTo("Home");
+						}
+						
+					}
+				}
+			);
 		},
 		_onRouteMatched: function(oEvent) {
 			this.sTenantId = oEvent.getParameter("arguments").tenantId;
@@ -79,6 +94,14 @@ sap.ui.define([
 			return icon;
 
 		}
+		// openPopOver: function (oEvent) {
+		// 	if (!this._oPopover) {
+		// 		this._oPopover = sap.ui.xmlfragment("popoverNavCon", "sap.m.sample.PopoverNavCon.Popover", this);
+		// 		this.getView().addDependent(this._oPopover);
+		// 	}
+
+		// 	this._oPopover.openBy(oEvent.getSource());
+		// },
 	});
 
 });

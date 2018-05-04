@@ -96,6 +96,12 @@
 				"clearControlAggregation": false
 			},
 			"routes": [{
+				"name": "Home",
+				"pattern": "",
+				"target": [
+					"Home"
+				]
+			},{
 				"name": "DeviceManager",
 				"pattern": "{tenantId}/devices",
 				"target": [
@@ -121,6 +127,17 @@
 				]
 			}],
 			"targets": {
+				"Home": {
+					"viewType": "XML",
+					"viewName": "Home",
+					"routerClass": "sap.m.routing.Router",
+					"async": true,
+					"viewPath": "userapp.UserApp.view",
+					"controlAggregation": "pages",
+					"controlId": "idAppControl",
+					"clearControlAggregation": false,
+					"transition": "fade"
+				},
 				"DeviceManager": {
 					"viewType": "XML",
 					"viewName": "DeviceManager",
