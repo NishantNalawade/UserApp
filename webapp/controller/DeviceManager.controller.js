@@ -7,24 +7,22 @@ sap.ui.define([
 	"use strict";
 
 	return Controller.extend("userapp.UserApp.controller.DeviceManager", {
+		oRouter:null,
 		sTenantId:null,
 		onInit: function() {
-			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-			oRouter.getRoute("DeviceManager").attachPatternMatched(this._onRouteMatched, this);
+			this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+			this.oRouter.getRoute("DeviceManager").attachPatternMatched(this._onRouteMatched, this);
 		},
 		
 		navSettings:function(){
-			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-			oRouter.navTo("Settings");
+			this.oRouter.navTo("Settings");
 		},
 		navOnboard:function(){
-			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-			oRouter.navTo("DeviceOnboard",{tenantId:this.sTenantId});
+			this.oRouter.navTo("DeviceOnboard",{tenantId:this.sTenantId});
 		},
 		navToDetails:function(oEvent){
 			var sDeviceId=oEvent.getSource().getDescription();
-			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-			oRouter.navTo("DeviceDetails",
+			this.oRouter.navTo("DeviceDetails",
 			{
 				tenantId:this.sTenantId,
 				deviceId:sDeviceId
@@ -40,8 +38,7 @@ sap.ui.define([
 							jQuery.sap.require("jquery.sap.storage");
 							var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
 							oStorage.clear();
-							var oRouter = sap.ui.core.UIComponent.getRouterFor(that);
-							oRouter.navTo("Home");
+							that.oRouter.navTo("Home");
 						}
 						
 					}

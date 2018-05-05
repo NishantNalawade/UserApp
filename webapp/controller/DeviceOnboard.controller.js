@@ -10,9 +10,11 @@ sap.ui.define([
 		sTenantId:null,
 		sDeviceId:null,
 		onInit:function(){
+				
 				this.getView().setModel(this.oDeviceModel,"QRdata");
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			    oRouter.getRoute("DeviceManager").attachPatternMatched(this._onRouteMatched, this);
+			    
 		},
 		_onRouteMatched: function(oEvent) {
 			this.sTenantId = oEvent.getParameter("arguments").tenantId;
@@ -20,7 +22,6 @@ sap.ui.define([
 			
 		},
 		onBoardDevice:function(oEvent){
-			
 		     var that=this;     
 		     that.oDeviceModel.getData().data=JSON.stringify(that.oDeviceModel.getData().data);
 			var sUrl = "/gatewaytest/tenants/" + this.sTenantId + "/devices/" + this.sDeviceId;
@@ -39,6 +40,21 @@ sap.ui.define([
 			});
 			
 			
+		},
+		addprops:function(that){
+			var props=that.oDeviceModel.getData().data;
+		    	var form=that.getView().byId("propertiesList");
+		    	form.removeAllContent();
+			for(var i in props)
+			{
+				
+				if(props.hasOwnProperty(i)){
+				var Label=new sap.m.Label({"text":i});
+				var Input=new sap.m.Input({"value":props[i]});
+				form.addContent(Label);   
+				form.addContent(Input);
+				}
+			}
 		},
 		navBack: function() {
 			var oHistory = History.getInstance();
@@ -82,19 +98,7 @@ sap.ui.define([
 					
 					that.oDeviceModel.setJSON(data);
 				//	this.getView().setModel(that.oDeviceModel,"QRdata");
-				var props=this.oDeviceModel.getData().data;
-		    	var form=this.getView().byId("propertiesList");
-		    	form.removeAllContent();
-			for(var i in props)
-			{
-				
-				if(props.hasOwnProperty(i)){
-				var Label=new sap.m.Label({"text":i});
-				var Input=new sap.m.Input({"value":props[i]});
-				form.addContent(Label);   
-				form.addContent(Input);
-				}
-			}
+					that.addprops(that);
 					dialog.close();
 				}
 			}.bind(this);

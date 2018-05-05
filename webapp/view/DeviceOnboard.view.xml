@@ -16,12 +16,15 @@
 								</Toolbar>
 							</f:toolbar>
 							<f:content>
+								<Label text="UID"/>
+								<Input value="{QRdata>/uid}" />	
 								<Label text="Device ID"/>
-								<Input value="{QRdata>/deviceid}" />
-							    <Label text="UID"/>
-								<Input value="{QRdata>/uid}" />
+								<Input value="{QRdata>/deviceId}" />
+								<Label text="Device Category"/>
+								<Input value="{QRdata>/category}" />
 								<Label text="Device Type"/>
-								<Input value="{QRdata>/deviceType}" />
+								<Input value="{QRdata>/deviceTypeGuid}" />
+							
 							</f:content>
 						</f:SimpleForm>
 						<f:SimpleForm id="propertiesList" title="Properties" editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4"
