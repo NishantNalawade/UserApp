@@ -63,15 +63,15 @@ sap.ui.define([
 								method: 'DELETE',
 								crossDomain: true,
 								success: function(data) {
-
+									
 								},
 								error: function(e) {
 									//error code
 								}
 							});
-							that.navBack();
+						that.navBack();
 						}
-
+						
 					}
 				}
 			);
