@@ -3,52 +3,44 @@ sap.ui.define([
 	"sap/ui/model/json/JSONModel",
 	"sap/m/MessageBox",
 	"sap/ui/model/Filter"
-], function(Controller, JSONModel, MessageBox, Filter) {
+], function(Controller,JSONModel,MessageBox,Filter) {
 	"use strict";
 
 	return Controller.extend("userapp.UserApp.controller.DeviceManager", {
-		oRouter: null,
-		sTenantId: null,
+		oRouter:null,
+		sTenantId:null,
 		onInit: function() {
 			this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			this.oRouter.getRoute("DeviceManager").attachPatternMatched(this._onRouteMatched, this);
 		},
-
-		navSettings: function() {
+		
+		navSettings:function(){
 			this.oRouter.navTo("Settings");
 		},
-		navOnboard: function() {
-			this.oRouter.navTo("DeviceOnboard", {
-				tenantId: this.sTenantId
+		navOnboard:function(){
+			this.oRouter.navTo("DeviceOnboard",{tenantId:this.sTenantId});
+		},
+		navToDetails:function(oEvent){
+			var sDeviceId=oEvent.getSource().getDescription();
+			this.oRouter.navTo("DeviceDetails",
+			{
+				tenantId:this.sTenantId,
+				deviceId:sDeviceId
 			});
 		},
-		navToDetails: function(oEvent) {
-			var sDeviceId = oEvent.getSource().getTitle();
-			var oJson = this.getView().getModel("devices").getData();
-			var sGUID;
-			for (var i = 0; i < oJson.length; i++) {
-				if (oJson[i].deviceId === sDeviceId) {
-					sGUID = oJson[i].deviceGuid;
-				}
-			}
-			this.oRouter.navTo("DeviceDetails", {
-				tenantId: this.sTenantId,
-				deviceId: sGUID
-			});
-		},
-		onLogout: function() {
-			var that = this;
+		onLogout:function(){
+			var that=this;
 			MessageBox.confirm(
 				"Do you want to change tenant?", {
 					styleClass: "sapUiSizeCompact",
 					onClose: function(oAction) {
-						if (oAction === "OK") {
+						if(oAction==="OK"){
 							jQuery.sap.require("jquery.sap.storage");
 							var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
 							oStorage.clear();
 							that.oRouter.navTo("Home");
 						}
-
+						
 					}
 				}
 			);
@@ -58,30 +50,30 @@ sap.ui.define([
 			this._getTenantDetail(this.sTenantId);
 			this._getDeviceDetail(this.sTenantId);
 		},
-		_getTenantDetail: function(sTenantId) {
+		_getTenantDetail:function(sTenantId){
 			var sUrl = "/gatewaytest/tenants/" + sTenantId;
-			var oView = this.getView();
+			var oView=this.getView();
 			$.ajax({
 				url: sUrl,
 				method: 'GET',
-				crossDomain: true,
+				crossDomain : true,
 				success: function(data) {
-					oView.setModel(new JSONModel(data), "tenant");
+					oView.setModel(new JSONModel(data),"tenant");
 				},
 				error: function(e) {
 					//error code
 				}
 			});
 		},
-		_getDeviceDetail: function(sTenantId) {
+		_getDeviceDetail:function(sTenantId){
 			var sUrl = "/gatewaytest/tenants/" + sTenantId + "/devices";
-			var oView = this.getView();
+			var oView=this.getView();
 			$.ajax({
 				url: sUrl,
 				method: 'GET',
-				crossDomain: true,
+				crossDomain : true,
 				success: function(data) {
-					oView.setModel(new JSONModel(data), "devices");
+					oView.setModel(new JSONModel(data),"devices");
 				},
 				error: function(e) {
 					//error code
@@ -90,12 +82,12 @@ sap.ui.define([
 		},
 		iconFormatter: function(deviceType) {
 			var icon = "sap-icon://product";
-			if (deviceType === "COOLER" || deviceType === "FRIDGE") {
+			if (deviceType === "Cooler" || deviceType === "Fridge") {
 				icon = "sap-icon://fridge";
-			} else if (deviceType === "BARREL" || deviceType === "Dispenser") {
-				icon = "sap-icon://lab";
-			} else if (deviceType === "Container") {
+			} else if (deviceType === "Dispenser") {
 				icon = "sap-icon://measuring-point";
+			} else if (deviceType === "Container") {
+				icon = "sap-icon://lab";
 			}
 			return icon;
 
@@ -115,6 +107,14 @@ sap.ui.define([
 			var binding = list.getBinding("items");
 			binding.filter(aFilters, "Application");
 		}
+		// openPopOver: function (oEvent) {
+		// 	if (!this._oPopover) {
+		// 		this._oPopover = sap.ui.xmlfragment("popoverNavCon", "sap.m.sample.PopoverNavCon.Popover", this);
+		// 		this.getView().addDependent(this._oPopover);
+		// 	}
+
+		// 	this._oPopover.openBy(oEvent.getSource());
+		// },
 	});
 
 });

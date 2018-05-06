@@ -10,19 +10,29 @@
 							singleContainerFullSize="false" ariaLabelledBy="Title1">
 							<f:content>
 								<Label text="Device Category"/>
-								<ComboBox items="{ path: 'categories>/'}" change="onCategorySelect" id="selectCategory" placeholder="Select Category">
+								<Select items="{ path: 'categories>/'}" change="onCategorySelect" id="selectCategory">
 									<core:Item key="{categories>id}" text="{categories>description}"/>
-								</ComboBox>
+								</Select>
 								<Label text="Device Type"/>
-								<ComboBox items="{ path: 'deviceTypes>/'}" change="onTypeSelect" id="selectDeviceType" placeholder="Select Device Type">
+								<Select items="{ path: 'deviceTypes>/'}" change="onTypeSelect" id="selectDeviceType">
 									<core:Item key="{deviceTypes>guid}" text="{deviceTypes>description}"/>
-								</ComboBox>
+								</Select>
 							</f:content>
 						</f:SimpleForm>
-						<List headerText="Properties" items="{ path: 'deviceProperties>/', sorter: { path: 'uid' } }" noDataText="No Properties Found">
-							<StandardListItem title="{deviceProperties>propertyName}" description="{deviceProperties>dataType}"/>
-						</List>
-						<Button id="saveButton" width="100%" type="Emphasized" text="Save" press="onSave" class="sapUiTinyMarginTop" enabled="false"/>
+						<f:SimpleForm id="propertiesFrom" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4"
+							labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
+							singleContainerFullSize="false" ariaLabelledBy="Title1" content="{ path: 'deviceProperties>/', sorter: { path: 'uid' } }">
+							<f:toolbar>
+								<Toolbar>
+									<Title text="Properties" level="H4" titleStyle="H4"/>
+									<ToolbarSpacer/>
+								</Toolbar>
+							</f:toolbar>
+							<f:content>
+								<StandardListItem title="{deviceProperties>propertyName}" description="{deviceProperties>dataType}" />
+							</f:content>
+						</f:SimpleForm>
+						<Button width="100%" type="Emphasized" text="Save" press="onSave" class="sapUiTinyMarginTop"/>
 					</VBox>
 				</content>
 			</Page>
