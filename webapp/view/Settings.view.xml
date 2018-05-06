@@ -22,7 +22,7 @@
 						<List headerText="Properties" items="{ path: 'deviceProperties>/', sorter: { path: 'uid' } }" noDataText="No Properties Found">
 							<StandardListItem title="{deviceProperties>propertyName}" description="{deviceProperties>dataType}"/>
 						</List>
-						<Button width="100%" type="Emphasized" text="Save" press="onSave" class="sapUiTinyMarginTop"/>
+						<Button id="saveButton" width="100%" type="Emphasized" text="Save" press="onSave" class="sapUiTinyMarginTop" enabled="false"/>
 					</VBox>
 				</content>
 			</Page>

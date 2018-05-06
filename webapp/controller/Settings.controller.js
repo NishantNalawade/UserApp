@@ -7,10 +7,10 @@ sap.ui.define([
 	"use strict";
 
 	return Controller.extend("userapp.UserApp.controller.Settings", {
-		sTenantId:null,
-		oCategories:null,
-		oDeviceTypes:null,
-		oProperties:null,
+		sTenantId: null,
+		oCategories: null,
+		oDeviceTypes: null,
+		oProperties: null,
 		navBack: function() {
 			var oHistory = History.getInstance();
 			var sPreviousHash = oHistory.getPreviousHash();
@@ -21,25 +21,26 @@ sap.ui.define([
 				oRouter.navTo("overview", {}, true);
 			}
 		},
-		onCategorySelect:function(oEvent){
-			var sCategoryId=oEvent.getSource().getSelectedKey();
+		onCategorySelect: function(oEvent) {
+			var sCategoryId = oEvent.getSource().getSelectedKey();
 			this._getDeviceTypes(sCategoryId);
 			this.getView().getModel("deviceProperties").setData(null);
 		},
-		onTypeSelect:function(oEvent){
-			var sTypeGUID=oEvent.getSource().getSelectedKey();
-			var sType=oEvent.getSource().getSelectedItem().getText();
-			this._getDeviceProperties(sTypeGUID,sType);
+		onTypeSelect: function(oEvent) {
+			var sTypeGUID = oEvent.getSource().getSelectedKey();
+			var sType = oEvent.getSource().getSelectedItem().getText();
+			this._getDeviceProperties(sTypeGUID, sType);
+			this.getView().byId("saveButton").setEnabled(true);
 		},
 		onInit: function() {
 			jQuery.sap.require("jquery.sap.storage");
 			var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
 			this.sTenantId = oStorage.get("storeTenantId");
-			
+
 			this._getCategories();
 		},
 		_getCategories: function() {
-			var that=this;
+			var that = this;
 			var sUrl = "/gatewaytest/tenants/" + this.sTenantId + "/categories";
 			var oView = this.getView();
 			$.ajax({
@@ -47,7 +48,7 @@ sap.ui.define([
 				method: 'GET',
 				crossDomain: true,
 				success: function(data) {
-					that.oCategories=new JSONModel();
+					that.oCategories = new JSONModel();
 					that.oCategories.setData(data);
 					oView.setModel(that.oCategories, "categories");
 				},
@@ -56,16 +57,16 @@ sap.ui.define([
 				}
 			});
 		},
-		_getDeviceTypes:function(sCategoryId){
-			var that=this;
-			var sUrl = "/gatewaytest/tenants/" + this.sTenantId + "/"+sCategoryId+"/deviceTypes";
+		_getDeviceTypes: function(sCategoryId) {
+			var that = this;
+			var sUrl = "/gatewaytest/tenants/" + this.sTenantId + "/" + sCategoryId + "/deviceTypes";
 			var oView = this.getView();
 			$.ajax({
 				url: sUrl,
 				method: 'GET',
 				crossDomain: true,
 				success: function(data) {
-					that.oDeviceTypes=new JSONModel();
+					that.oDeviceTypes = new JSONModel();
 					that.oDeviceTypes.setData(data);
 					oView.setModel(that.oDeviceTypes, "deviceTypes");
 				},
@@ -74,15 +75,15 @@ sap.ui.define([
 				}
 			});
 		},
-		_getDeviceProperties:function(sTypeGUID,sType){
-			var sUrl = "/gatewaytest/tenants/" + this.sTenantId + "/"+sTypeGUID+"/deviceProperties";
+		_getDeviceProperties: function(sTypeGUID, sType) {
+			var sUrl = "/gatewaytest/tenants/" + this.sTenantId + "/" + sTypeGUID + "/deviceProperties";
 			var oView = this.getView();
 			$.ajax({
 				url: sUrl,
 				method: 'GET',
 				crossDomain: true,
 				success: function(data) {
-					var oModel=new JSONModel();
+					var oModel = new JSONModel();
 					oModel.setData(data);
 					oView.setModel(oModel, "deviceProperties");
 				},
@@ -91,23 +92,26 @@ sap.ui.define([
 				}
 			});
 		},
-		onSave:function(){
-			var sCategory=this.getView().byId("selectCategory").getSelectedItem().getText();
-			var oType=this.getView().byId("selectDeviceType").getSelectedItem();
-			var sType=oType.getText();
-			var sTypeGUID=oType.getKey();
-			var oData=this.getView().getModel("deviceProperties").getData();
-					var oTempJson={
-						"sCategory":sCategory,
-						"sDeviceType":sType,
-						"sDeviceTypeGUID":sTypeGUID,
-						"oProperties":oData
-					};
-					
-					jQuery.sap.require("jquery.sap.storage");
-					var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
-					oStorage.put("storeDeviceProperties", JSON.stringify(oTempJson));
-					MessageToast.show("Settings saved successfully");
+		onSave: function() {
+			var sCategory = this.getView().byId("selectCategory").getSelectedItem().getText();
+			var oType = this.getView().byId("selectDeviceType").getSelectedItem();
+			var sType = oType.getText();
+			var sTypeGUID = oType.getKey();
+			var oData = this.getView().getModel("deviceProperties").getData();
+			var oTempJson = {
+				"sCategory": sCategory,
+				"sDeviceType": sType,
+				"sDeviceTypeGUID": sTypeGUID,
+				"oProperties": oData
+			};
+
+			jQuery.sap.require("jquery.sap.storage");
+			var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
+			oStorage.put("storeDeviceProperties", JSON.stringify(oTempJson));
+			MessageToast.show("Settings saved successfully");
+			
+			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+				oRouter.navTo("DeviceManager",{tenantId:this.sTenantId});
 		}
 	});
 
