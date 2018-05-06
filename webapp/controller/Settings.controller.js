@@ -1,8 +1,9 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/core/routing/History",
-	"sap/ui/model/json/JSONModel"
-], function(Controller, History, JSONModel) {
+	"sap/ui/model/json/JSONModel",
+	"sap/m/MessageToast"
+], function(Controller, History, JSONModel, MessageToast) {
 	"use strict";
 
 	return Controller.extend("userapp.UserApp.controller.Settings", {
@@ -23,6 +24,7 @@ sap.ui.define([
 		onCategorySelect:function(oEvent){
 			var sCategoryId=oEvent.getSource().getSelectedKey();
 			this._getDeviceTypes(sCategoryId);
+			this.getView().getModel("deviceProperties").setData(null);
 		},
 		onTypeSelect:function(oEvent){
 			var sTypeGUID=oEvent.getSource().getSelectedKey();
@@ -46,7 +48,7 @@ sap.ui.define([
 				crossDomain: true,
 				success: function(data) {
 					that.oCategories=new JSONModel();
-					that.oCategories.setJSON(data);
+					that.oCategories.setData(data);
 					oView.setModel(that.oCategories, "categories");
 				},
 				error: function(e) {
@@ -64,7 +66,7 @@ sap.ui.define([
 				crossDomain: true,
 				success: function(data) {
 					that.oDeviceTypes=new JSONModel();
-					that.oDeviceTypes.setJSON(data);
+					that.oDeviceTypes.setData(data);
 					oView.setModel(that.oDeviceTypes, "deviceTypes");
 				},
 				error: function(e) {
@@ -81,7 +83,7 @@ sap.ui.define([
 				crossDomain: true,
 				success: function(data) {
 					var oModel=new JSONModel();
-					oModel.setJSON(data);
+					oModel.setData(data);
 					oView.setModel(oModel, "deviceProperties");
 				},
 				error: function(e) {
@@ -105,6 +107,7 @@ sap.ui.define([
 					jQuery.sap.require("jquery.sap.storage");
 					var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
 					oStorage.put("storeDeviceProperties", JSON.stringify(oTempJson));
+					MessageToast.show("Settings saved successfully");
 		}
 	});
 
