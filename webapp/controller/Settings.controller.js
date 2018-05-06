@@ -7,6 +7,9 @@ sap.ui.define([
 
 	return Controller.extend("userapp.UserApp.controller.Settings", {
 		sTenantId:null,
+		oCategories:null,
+		oDeviceTypes:null,
+		oProperties:null,
 		navBack: function() {
 			var oHistory = History.getInstance();
 			var sPreviousHash = oHistory.getPreviousHash();
@@ -33,6 +36,7 @@ sap.ui.define([
 			this._getCategories();
 		},
 		_getCategories: function() {
+			var that=this;
 			var sUrl = "/gatewaytest/tenants/" + this.sTenantId + "/categories";
 			var oView = this.getView();
 			$.ajax({
@@ -40,9 +44,9 @@ sap.ui.define([
 				method: 'GET',
 				crossDomain: true,
 				success: function(data) {
-					var oModel=new JSONModel();
-					oModel.setJSON(data);
-					oView.setModel(oModel, "categories");
+					that.oCategories=new JSONModel();
+					that.oCategories.setJSON(data);
+					oView.setModel(that.oCategories, "categories");
 				},
 				error: function(e) {
 					//error code
@@ -50,6 +54,7 @@ sap.ui.define([
 			});
 		},
 		_getDeviceTypes:function(sCategoryId){
+			var that=this;
 			var sUrl = "/gatewaytest/tenants/" + this.sTenantId + "/"+sCategoryId+"/deviceTypes";
 			var oView = this.getView();
 			$.ajax({
@@ -57,9 +62,9 @@ sap.ui.define([
 				method: 'GET',
 				crossDomain: true,
 				success: function(data) {
-					var oModel=new JSONModel();
-					oModel.setJSON(data);
-					oView.setModel(oModel, "deviceTypes");
+					that.oDeviceTypes=new JSONModel();
+					that.oDeviceTypes.setJSON(data);
+					oView.setModel(that.oDeviceTypes, "deviceTypes");
 				},
 				error: function(e) {
 					//error code
@@ -67,6 +72,7 @@ sap.ui.define([
 			});
 		},
 		_getDeviceProperties:function(sTypeGUID){
+			var that= this;
 			var sUrl = "/gatewaytest/tenants/" + this.sTenantId + "/"+sTypeGUID+"/deviceProperties";
 			var oView = this.getView();
 			$.ajax({
@@ -74,9 +80,9 @@ sap.ui.define([
 				method: 'GET',
 				crossDomain: true,
 				success: function(data) {
-					var oModel=new JSONModel();
-					oModel.setJSON(data);
-					oView.setModel(oModel, "properties");
+					that.oProperties=new JSONModel();
+					that.oProperties.setJSON(data);
+					oView.setModel(that.oProperties, "properties");
 				},
 				error: function(e) {
 					//error code

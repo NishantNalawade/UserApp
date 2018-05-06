@@ -29,7 +29,7 @@
 								</Toolbar>
 							</f:toolbar>
 							<f:content>
-								<StandardListItem title="{deviceName}" description="{tenantName}" type="Navigation" icon="{path:'deviceType',formatter:'.iconFormatter'}"
+								<StandardListItem title="{deviceName}" description="{tenantName}" type="Navigation" icon="{path:'deviceType'}"
 									iconDensityAware="false" iconInset="false" press="onDialogOpen"/>
 							</f:content>
 						</f:SimpleForm>

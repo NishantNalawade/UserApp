@@ -21,9 +21,9 @@
 								<Label text="Device ID"/>
 								<Input value="{QRdata>/deviceId}" />
 								<Label text="Device Category"/>
-								<Input value="{QRdata>/category}" />
+								<Input value="{QRdata>/category}" editable="false"/>
 								<Label text="Device Type"/>
-								<Input value="{QRdata>/deviceTypeGuid}" />
+								<Input value="{QRdata>/deviceType}" editable="false"/>
 							
 							</f:content>
 						</f:SimpleForm>
