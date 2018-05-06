@@ -106,7 +106,7 @@ sap.ui.define([
 			var aFilters = [];
 			var sQuery = oEvt.getSource().getValue();
 			if (sQuery && sQuery.length > 0) {
-				var filter = new Filter("name", sap.ui.model.FilterOperator.Contains, sQuery);
+				var filter = new Filter("deviceId", sap.ui.model.FilterOperator.Contains, sQuery);
 				aFilters.push(filter);
 			}
 

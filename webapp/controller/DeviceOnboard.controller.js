@@ -31,6 +31,7 @@ sap.ui.define([
 			for(var i in props){
 				data[props[i].propertyName]="";
 			}
+			delete this.oDeviceModel.getData().oPoperties; 
 		    this.oDeviceModel.getData().data=data;
 			this.addprops(this);
 		},
@@ -43,7 +44,7 @@ sap.ui.define([
 		onBoardDevice:function(oEvent){
 		     var that=this; 
 		     var oModel= new JSONModel();
-		     oModel.setData(that.oDeviceModel.getData());
+		     oModel.setData(JSON.parse(JSON.stringify(that.oDeviceModel.getData()))); //to make a copy of device model
 		     var props=oModel.getData();
 		     props.data=JSON.stringify(oModel.getData().data);
 			var sUrl = "/gatewaytest/tenants/" + this.sTenantId + "/devices";
@@ -149,10 +150,10 @@ sap.ui.define([
 					var ctx = canvas.getContext('2d');
 					var loop = (function() {
 						if (this.codeScanned) {
-							//video.stop();
+							video.stop();
 							video.autoplay = false;
 							//console.log(this.codeScanned);
-							//delete video;
+							video.srcObject=null;
 							return;
 						} else {
 							ctx.drawImage(video, 0, 0);
