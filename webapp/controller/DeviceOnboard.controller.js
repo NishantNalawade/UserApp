@@ -39,26 +39,13 @@ sap.ui.define([
 			 this.getDataFromStorage();
 			//this.getView().setModel(this.oDeviceModel,"QRdata");
 		},
-		_getProperties:function(){
-			var aPropertiesList=this.getView().byId("propertiesList").getContent();
-			var sJson="{";
-			var prop, val;
-			for(var i=0;i<aPropertiesList.length;i+=2){
-					prop=aPropertiesList[i].getText();
-					val=aPropertiesList[i+1].getValue();
-					sJson+="\""+prop+"\": \""+val+"\",";
-			}
-			sJson=sJson.substring(0, sJson.length-1);
-			sJson=sJson+"}";
-			this.oDeviceModel.getData().data=sJson;
-			
-		},
 		onBoardDevice:function(oEvent){
-			this._getProperties();
-		     var that=this;     
-		    	var sUrl = "/gatewaytest/tenants/" + this.sTenantId + "/devices";
-			var oData=that.oDeviceModel.getData();
-			delete oData.oProperties;
+		     var that=this; 
+		     var oModel= new JSONModel();
+		     oModel.setData(that.oDeviceModel.getData());
+		     var props=oModel.getData();
+		     props.data=JSON.stringify(oModel.getData().data);
+			var sUrl = "/gatewaytest/tenants/" + this.sTenantId + "/devices";
 			$.ajax({
 				url: sUrl,
 				headers:{
@@ -66,7 +53,7 @@ sap.ui.define([
 				},
 				method: 'POST',
 				crossDomain: true,
-				data:JSON.stringify(oData),
+				data:JSON.stringify(props),
 				success: function(data) {
 					alert("success");
 				},
@@ -82,12 +69,13 @@ sap.ui.define([
 			var props=that.oDeviceModel.getData().data;
 		    	var form=that.getView().byId("propertiesList");
 		    	form.removeAllContent();
+		  
 			for(var i in props)
 			{
 				
 				if(props.hasOwnProperty(i)){
 				var Label=new sap.m.Label({"text":i});
-				var Input=new sap.m.Input({"value":props[i]});
+				var Input=new sap.m.Input().bindProperty("value", "QRdata>/data/"+String(i));
 				form.addContent(Label);   
 				form.addContent(Input);
 				}
