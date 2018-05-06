@@ -1,20 +1,21 @@
 sap.ui.define([
-	"sap/ui/core/mvc/Controller",
-	"sap/ui/model/json/JSONModel",
-	"sap/ui/core/routing/History",
-	"sap/m/MessageBox"
-], function(Controller, JSONModel, History, MessageBox) {
+		"sap/ui/core/mvc/Controller",
+		"sap/ui/model/json/JSONModel",
+		"sap/ui/core/routing/History",
+		"sap/m/MessageBox",
+		"sap/m/MessageToast"
+	], function (Controller, JSONModel, History, MessageBox, MessageToast) {
 	"use strict";
 
 	return Controller.extend("userapp.UserApp.controller.DeviceDetails", {
 		sTenantId: null,
 		sDeviceId: null,
-		onInit: function() {
+		onInit: function () {
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			oRouter.getRoute("DeviceDetails").attachPatternMatched(this._onRouteMatched, this);
 		},
 
-		navBack: function() {
+		navBack: function () {
 			var oHistory = History.getInstance();
 			var sPreviousHash = oHistory.getPreviousHash();
 			if (sPreviousHash !== undefined) {
@@ -25,13 +26,13 @@ sap.ui.define([
 			}
 			this.getView().byId("devProps").removeAllContent();
 		},
-		_onRouteMatched: function(oEvent) {
+		_onRouteMatched: function (oEvent) {
 			this.sTenantId = oEvent.getParameter("arguments").tenantId;
 			this.sDeviceId = oEvent.getParameter("arguments").deviceId;
 			this._getDeviceDetail();
 			//this.getView().byId("detailsPage").setTitle(sDeviceId);
 		},
-		addprops: function(that) {
+		addprops: function (that) {
 			var props = that.getView().getModel("deviceDetails").getData().data;
 			props = JSON.parse(props);
 			var form = that.getView().byId("devProps");
@@ -39,46 +40,46 @@ sap.ui.define([
 			for (var i in props) {
 				if (props.hasOwnProperty(i)) {
 					var Label = new sap.m.Label({
-						"text": i
-					});
+							"text": i
+						});
 					var Input = new sap.m.Input({
-						"value": props[i]
-					});
+							"value": props[i]
+						});
 					Input.setEditable(false);
 					form.addContent(Label);
 					form.addContent(Input);
 				}
 			}
 		},
-		offBoard: function() {
+		offBoard: function () {
 			var that = this;
 			MessageBox.confirm(
 				"Do you want to OffBoard the Device?", {
-					styleClass: "sapUiSizeCompact",
-					onClose: function(oAction) {
-						if (oAction === "OK") {
-							var sUrl = "/gatewaytest/tenants/" + that.sTenantId + "/devices/" + that.sDeviceId;
-							$.ajax({
-								url: sUrl,
-								method: 'DELETE',
-								crossDomain: true,
-								success: function(data) {
-
-								},
-								error: function(e) {
-									//error code
-								}
-							});
-							that.navBack();
-						}
+				styleClass: "sapUiSizeCompact",
+				onClose: function (oAction) {
+					if (oAction === "OK") {
+						var sUrl = "/gatewaytest/tenants/" + that.sTenantId + "/devices/" + that.sDeviceId;
+						$.ajax({
+							url: sUrl,
+							method: 'DELETE',
+							crossDomain: true,
+							success: function (data) {
+								MessageToast.show("Device Offboarded");
+								that.navBack();
+							},
+							error: function (e) {
+								//error code
+							}
+						});
 
 					}
+
 				}
-			);
+			});
 
 		},
 
-		_getDeviceDetail: function() {
+		_getDeviceDetail: function () {
 			var that = this;
 			var sUrl = "/gatewaytest/tenants/" + this.sTenantId + "/devices/" + this.sDeviceId;
 			var oView = this.getView();
@@ -86,11 +87,11 @@ sap.ui.define([
 				url: sUrl,
 				method: 'GET',
 				crossDomain: true,
-				success: function(data) {
+				success: function (data) {
 					oView.setModel(new JSONModel(data), "deviceDetails");
 					that.addprops(that);
 				},
-				error: function(e) {
+				error: function (e) {
 					//error code
 				}
 			});
