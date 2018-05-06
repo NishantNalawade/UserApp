@@ -40,11 +40,8 @@ sap.ui.define([
 			//this.getView().setModel(this.oDeviceModel,"QRdata");
 		},
 		onBoardDevice:function(oEvent){
-		     var that=this; 
-		     var oModel= new JSONModel();
-		     oModel.setData(that.oDeviceModel.getData());
-		     var props=oModel.getData();
-		     props.data=JSON.stringify(oModel.getData().data);
+		     var that=this;     
+		     that.oDeviceModel.getData().data=JSON.stringify(that.oDeviceModel.getData().data);
 			var sUrl = "/gatewaytest/tenants/" + this.sTenantId + "/devices";
 			$.ajax({
 				url: sUrl,
@@ -53,7 +50,7 @@ sap.ui.define([
 				},
 				method: 'POST',
 				crossDomain: true,
-				data:JSON.stringify(props),
+				data:JSON.stringify(that.oDeviceModel.getData()),
 				success: function(data) {
 					alert("success");
 				},
@@ -69,13 +66,12 @@ sap.ui.define([
 			var props=that.oDeviceModel.getData().data;
 		    	var form=that.getView().byId("propertiesList");
 		    	form.removeAllContent();
-		  
 			for(var i in props)
 			{
 				
 				if(props.hasOwnProperty(i)){
 				var Label=new sap.m.Label({"text":i});
-				var Input=new sap.m.Input().bindProperty("value", "QRdata>/data/"+String(i));
+				var Input=new sap.m.Input({"value":props[i]});
 				form.addContent(Label);   
 				form.addContent(Input);
 				}

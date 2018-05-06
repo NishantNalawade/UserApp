@@ -38,8 +38,12 @@ sap.ui.define([
 			form.removeAllContent();
 			for (var i in props) {
 				if (props.hasOwnProperty(i)) {
-					var Label = new sap.m.Label().bindProperty("value", props[i]);
-					var Input = new sap.m.Input().bindProperty("value", props[i]);
+					var Label = new sap.m.Label({
+						"text": i
+					});
+					var Input = new sap.m.Input({
+						"value": props[i]
+					});
 					Input.setEditable(false);
 					form.addContent(Label);
 					form.addContent(Input);
@@ -59,15 +63,15 @@ sap.ui.define([
 								method: 'DELETE',
 								crossDomain: true,
 								success: function(data) {
-									
+
 								},
 								error: function(e) {
 									//error code
 								}
 							});
-						that.navBack();
+							that.navBack();
 						}
-						
+
 					}
 				}
 			);
