@@ -48,7 +48,9 @@ sap.ui.define([
 				method: 'GET',
 				crossDomain: true,
 				success: function(data) {
+
 					that.oCategories = new JSONModel();
+
 					that.oCategories.setData(data);
 					oView.setModel(that.oCategories, "categories");
 				},
@@ -66,6 +68,7 @@ sap.ui.define([
 				method: 'GET',
 				crossDomain: true,
 				success: function(data) {
+
 					that.oDeviceTypes = new JSONModel();
 					that.oDeviceTypes.setData(data);
 					oView.setModel(that.oDeviceTypes, "deviceTypes");
@@ -83,7 +86,9 @@ sap.ui.define([
 				method: 'GET',
 				crossDomain: true,
 				success: function(data) {
+
 					var oModel = new JSONModel();
+
 					oModel.setData(data);
 					oView.setModel(oModel, "deviceProperties");
 				},
@@ -92,26 +97,26 @@ sap.ui.define([
 				}
 			});
 		},
-		onSave: function() {
-			var sCategory = this.getView().byId("selectCategory").getSelectedItem().getText();
-			var oType = this.getView().byId("selectDeviceType").getSelectedItem();
-			var sType = oType.getText();
-			var sTypeGUID = oType.getKey();
-			var oData = this.getView().getModel("deviceProperties").getData();
-			var oTempJson = {
-				"sCategory": sCategory,
-				"sDeviceType": sType,
-				"sDeviceTypeGUID": sTypeGUID,
-				"oProperties": oData
-			};
 
-			jQuery.sap.require("jquery.sap.storage");
-			var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
-			oStorage.put("storeDeviceProperties", JSON.stringify(oTempJson));
-			MessageToast.show("Settings saved successfully");
-			
-			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-				oRouter.navTo("DeviceManager",{tenantId:this.sTenantId});
+		onSave:function(){
+			var sCategory=this.getView().byId("selectCategory").getSelectedItem().getText();
+			var oType=this.getView().byId("selectDeviceType").getSelectedItem();
+			var sType=oType.getText();
+			var sTypeGUID=oType.getKey();
+			var oData=this.getView().getModel("deviceProperties").getData();
+					var oTempJson={
+						"deviceId":"",
+						"uid":"",
+						"category":sCategory,
+						"deviceType":sType,
+						"deviceTypeGuid":sTypeGUID,
+						"oProperties":oData
+					};
+					
+					jQuery.sap.require("jquery.sap.storage");
+					var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
+					oStorage.put("storeDeviceProperties", JSON.stringify(oTempJson));
+					MessageToast.show("Settings Saved");
 		}
 	});
 
