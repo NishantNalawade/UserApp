@@ -10,23 +10,44 @@ sap.ui.define([
 		sTenantId:null,
 		sDeviceId:null,
 		onInit:function(){
-				
-				this.getView().setModel(this.oDeviceModel,"QRdata");
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-			    oRouter.getRoute("DeviceManager").attachPatternMatched(this._onRouteMatched, this);
-			    
+			    oRouter.getRoute("DeviceOnboard").attachPatternMatched(this._onRouteMatched, this);
+			    this.getDataFromStorage();
+			    this.getView().setModel(this.oDeviceModel,"QRdata");
+		},
+		onAfterRendering:function(){
+			console.log("hi")
+		},
+		getDataFromStorage:function(){
+			jQuery.sap.require("jquery.sap.storage");
+			var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
+			var sDeviceprops=oStorage.get("storeDeviceProperties");
+			var props=this.oDeviceModel.getData().oProperties;
+			if(sDeviceprops){
+				this.oDeviceModel.setJSON(sDeviceprops);
+			}
+			var data={};
+			for(var i in props){
+				data[props[i].propertyName]="";
+			}
+		    this.oDeviceModel.getData().data=data;
+			this.addprops(this);
 		},
 		_onRouteMatched: function(oEvent) {
 			this.sTenantId = oEvent.getParameter("arguments").tenantId;
 			this.sDeviceId = oEvent.getParameter("arguments").deviceId;
-			
+			 this.getDataFromStorage();
+			//this.getView().setModel(this.oDeviceModel,"QRdata");
 		},
 		onBoardDevice:function(oEvent){
 		     var that=this;     
 		     that.oDeviceModel.getData().data=JSON.stringify(that.oDeviceModel.getData().data);
-			var sUrl = "/gatewaytest/tenants/" + this.sTenantId + "/devices/" + this.sDeviceId;
+			var sUrl = "/gatewaytest/tenants/" + this.sTenantId + "/devices";
 			$.ajax({
 				url: sUrl,
+				headers:{
+				"content-type": "application/json"
+				},
 				method: 'POST',
 				crossDomain: true,
 				data:JSON.stringify(that.oDeviceModel.getData()),

@@ -46,7 +46,7 @@ sap.ui.define([
 				crossDomain: true,
 				success: function(data) {
 					that.oCategories=new JSONModel();
-					that.oCategories.setJSON(data);
+					that.oCategories.setData(data);
 					oView.setModel(that.oCategories, "categories");
 				},
 				error: function(e) {
@@ -64,7 +64,7 @@ sap.ui.define([
 				crossDomain: true,
 				success: function(data) {
 					that.oDeviceTypes=new JSONModel();
-					that.oDeviceTypes.setJSON(data);
+					that.oDeviceTypes.setData(data);
 					oView.setModel(that.oDeviceTypes, "deviceTypes");
 				},
 				error: function(e) {
@@ -81,7 +81,7 @@ sap.ui.define([
 				crossDomain: true,
 				success: function(data) {
 					var oModel=new JSONModel();
-					oModel.setJSON(data);
+					oModel.setData(data);
 					oView.setModel(oModel, "deviceProperties");
 				},
 				error: function(e) {
@@ -96,9 +96,11 @@ sap.ui.define([
 			var sTypeGUID=oType.getKey();
 			var oData=this.getView().getModel("deviceProperties").getData();
 					var oTempJson={
-						"sCategory":sCategory,
-						"sDeviceType":sType,
-						"sDeviceTypeGUID":sTypeGUID,
+						"deviceId":"",
+						"uid":"",
+						"category":sCategory,
+						"deviceType":sType,
+						"deviceTypeGuid":sTypeGUID,
 						"oProperties":oData
 					};
 					
