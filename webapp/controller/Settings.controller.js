@@ -26,7 +26,8 @@ sap.ui.define([
 		},
 		onTypeSelect:function(oEvent){
 			var sTypeGUID=oEvent.getSource().getSelectedKey();
-			this._getDeviceProperties(sTypeGUID);
+			var sType=oEvent.getSource().getSelectedItem().getText();
+			this._getDeviceProperties(sTypeGUID,sType);
 		},
 		onInit: function() {
 			jQuery.sap.require("jquery.sap.storage");
@@ -71,8 +72,7 @@ sap.ui.define([
 				}
 			});
 		},
-		_getDeviceProperties:function(sTypeGUID){
-			var that= this;
+		_getDeviceProperties:function(sTypeGUID,sType){
 			var sUrl = "/gatewaytest/tenants/" + this.sTenantId + "/"+sTypeGUID+"/deviceProperties";
 			var oView = this.getView();
 			$.ajax({
@@ -80,14 +80,31 @@ sap.ui.define([
 				method: 'GET',
 				crossDomain: true,
 				success: function(data) {
-					that.oProperties=new JSONModel();
-					that.oProperties.setJSON(data);
-					oView.setModel(that.oProperties, "properties");
+					var oModel=new JSONModel();
+					oModel.setJSON(data);
+					oView.setModel(oModel, "deviceProperties");
 				},
 				error: function(e) {
 					//error code
 				}
 			});
+		},
+		onSave:function(){
+			var sCategory=this.getView().byId("selectCategory").getSelectedItem().getText();
+			var oType=this.getView().byId("selectDeviceType").getSelectedItem();
+			var sType=oType.getText();
+			var sTypeGUID=oType.getKey();
+			var oData=this.getView().getModel("deviceProperties").getData();
+					var oTempJson={
+						"sCategory":sCategory,
+						"sDeviceType":sType,
+						"sDeviceTypeGUID":sTypeGUID,
+						"oProperties":oData
+					};
+					
+					jQuery.sap.require("jquery.sap.storage");
+					var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
+					oStorage.put("storeDeviceProperties", JSON.stringify(oTempJson));
 		}
 	});
 

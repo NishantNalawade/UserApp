@@ -10,18 +10,18 @@
 							singleContainerFullSize="false" ariaLabelledBy="Title1">
 							<f:content>
 								<Label text="Device Category"/>
-								<Select items="{ path: 'categories>/'}" change="onCategorySelect">
+								<Select items="{ path: 'categories>/'}" change="onCategorySelect" id="selectCategory">
 									<core:Item key="{categories>id}" text="{categories>description}"/>
 								</Select>
 								<Label text="Device Type"/>
-								<Select items="{ path: 'deviceTypes>/'}" change="onTypeSelect">
+								<Select items="{ path: 'deviceTypes>/'}" change="onTypeSelect" id="selectDeviceType">
 									<core:Item key="{deviceTypes>guid}" text="{deviceTypes>description}"/>
 								</Select>
 							</f:content>
 						</f:SimpleForm>
 						<f:SimpleForm id="propertiesFrom" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4"
 							labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
-							singleContainerFullSize="false" ariaLabelledBy="Title1" content="{ path: '/devices', sorter: { path: 'uid' } }">
+							singleContainerFullSize="false" ariaLabelledBy="Title1" content="{ path: 'deviceProperties>/', sorter: { path: 'uid' } }">
 							<f:toolbar>
 								<Toolbar>
 									<Title text="Properties" level="H4" titleStyle="H4"/>
@@ -29,11 +29,10 @@
 								</Toolbar>
 							</f:toolbar>
 							<f:content>
-								<StandardListItem title="{deviceName}" description="{tenantName}" type="Navigation" icon="{path:'deviceType'}"
-									iconDensityAware="false" iconInset="false" press="onDialogOpen"/>
+								<StandardListItem title="{deviceProperties>propertyName}" description="{deviceProperties>dataType}" />
 							</f:content>
 						</f:SimpleForm>
-						<Button width="100%" type="Emphasized" text="Save" class="sapUiTinyMarginTop"/>
+						<Button width="100%" type="Emphasized" text="Save" press="onSave" class="sapUiTinyMarginTop"/>
 					</VBox>
 				</content>
 			</Page>
