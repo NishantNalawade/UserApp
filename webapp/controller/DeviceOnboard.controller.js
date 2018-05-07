@@ -58,6 +58,7 @@ sap.ui.define([
 				data:JSON.stringify(props),
 				success: function(data) {
 					MessageToast.show("Device Onboarded Succesfully");
+					that.navBack();
 				},
 				error: function(e) {
 					MessageToast.show(e);
