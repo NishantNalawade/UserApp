@@ -117,6 +117,8 @@ sap.ui.define([
 					var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
 					oStorage.put("storeDeviceProperties", JSON.stringify(oTempJson));
 					MessageToast.show("Settings Saved");
+					
+					this.navBack();
 		}
 	});
 
