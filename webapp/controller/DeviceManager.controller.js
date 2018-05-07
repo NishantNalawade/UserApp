@@ -114,6 +114,14 @@ sap.ui.define([
 			var list = this.getView().byId("deviceList");
 			var binding = list.getBinding("items");
 			binding.filter(aFilters, "Application");
+		},
+		onBeforeRendering:function(){
+			jQuery.sap.require("jquery.sap.storage");
+			var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
+			var sSettings=oStorage.get("storeDeviceProperties");
+			if(!sSettings){
+				this.navSettings();
+			}
 		}
 	});
 
