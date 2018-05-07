@@ -61,7 +61,7 @@ sap.ui.define([
 					that.navBack();
 				},
 				error: function(e) {
-					MessageToast.show(e);
+					MessageToast.show(e.responseJSON.message);
 					//error code
 				}
 			});
