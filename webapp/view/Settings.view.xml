@@ -15,7 +15,7 @@
 								</ComboBox>
 								<Label text="Device Type"/>
 								<ComboBox items="{ path: 'deviceTypes>/'}" change="onTypeSelect" id="selectDeviceType" placeholder="Select Device Type">
-									<core:Item key="{deviceTypes>guid}" text="{deviceTypes>description}"/>
+									<core:Item key="{deviceTypes>guid}" text="{deviceTypes>extId}"/>
 								</ComboBox>
 							</f:content>
 						</f:SimpleForm>

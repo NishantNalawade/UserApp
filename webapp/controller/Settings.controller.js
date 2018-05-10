@@ -24,7 +24,10 @@ sap.ui.define([
 		onCategorySelect: function(oEvent) {
 			var sCategoryId = oEvent.getSource().getSelectedKey();
 			this._getDeviceTypes(sCategoryId);
-			this.getView().getModel("deviceProperties").setData(null);
+			if(this.getView().getModel("deviceProperties")!=null){
+				this.getView().getModel("deviceProperties").setData(null);
+			}
+			
 		},
 		onTypeSelect: function(oEvent) {
 			var sTypeGUID = oEvent.getSource().getSelectedKey();

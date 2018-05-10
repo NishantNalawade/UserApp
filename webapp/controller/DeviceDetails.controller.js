@@ -25,11 +25,15 @@ sap.ui.define([
 				oRouter.navTo("overview", {}, true);
 			}
 			this.getView().byId("devProps").removeAllContent();
+			//this.getView().byId("devicePayload").removeAllContent();
 		},
 		_onRouteMatched: function (oEvent) {
 			this.sTenantId = oEvent.getParameter("arguments").tenantId;
 			this.sDeviceId = oEvent.getParameter("arguments").deviceId;
 			this._getDeviceDetail();
+			var oModel=new JSONModel();
+			oModel.loadData("model/mockPayload.json");
+			this.getView().setModel(oModel,"payload");
 			//this.getView().byId("detailsPage").setTitle(sDeviceId);
 		},
 		addprops: function (that) {
