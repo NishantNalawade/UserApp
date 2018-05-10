@@ -2,7 +2,8 @@ sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/model/json/JSONModel",
 	"sap/ui/core/routing/History",
-	"sap/m/MessageToast"
+	"sap/m/MessageToast",
+	"sap/ndc/BarcodeScanner"						 
 ], function(Controller, JSONModel, History, MessageToast) {
 	"use strict";
 
@@ -96,6 +97,21 @@ sap.ui.define([
 			}
 		},
 		onScan: function() {
+			var that=this;
+			sap.ndc.BarcodeScanner.scan(
+				function(mResult) {
+					that.oDeviceModel.setJSON(mResult.text);
+					that.addprops(that);
+					//dialog.close();
+				},
+				function(Error) {
+					MessageToast.show("Scanning failed: " + Error);
+					   
+					
+				}
+				);
+				
+			/*
 			this.codeScanned = false;
 			var container = new sap.m.VBox({
 				"width": "400px",
@@ -170,6 +186,7 @@ sap.ui.define([
 				});
 
 			container.getDomRef().appendChild(canvas);
+			*/
 		}
 	});
 
