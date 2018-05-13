@@ -148,6 +148,17 @@ sap.ui.define([
 				}
 			});
 		},
+		
+		_jsonMessagePayload:function(){
+			var oMessageItems=this.getView().byId("messagePayload").getItems();
+			var oMessagePayload={};
+			for(var i=0;i<oMessageItems.length;i++){
+				var sKey=oMessageItems[i].getItems()[0].getText();
+				var sValue=oMessageItems[i].getItems()[1].getSelectedKey();
+				oMessagePayload[sKey]=sValue;
+			}
+			return oMessagePayload;
+		},
 
 		onSave: function() {
 			var sCategory = this.getView().byId("selectCategory").getSelectedItem().getText();
@@ -164,9 +175,12 @@ sap.ui.define([
 				"oProperties": oData
 			};
 
+
+			var jsonPayload=this._jsonMessagePayload();
 			jQuery.sap.require("jquery.sap.storage");
 			var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
 			oStorage.put("storeDeviceProperties", JSON.stringify(oTempJson));
+			oStorage.put("storeMessageProperties",JSON.stringify(jsonPayload));
 			MessageToast.show("Settings Saved");
 
 			this.navBack();

@@ -28,13 +28,12 @@
 									<Title level="H2" text="Payload Message" class="sapUiSmallMarginBegin sapUiSmallMarginTop"/>
 									<ToolbarSpacer/>
 								</Toolbar>
-								<VBox items="{ path: 'messageProperties>/'}" class="sapUiSmallMarginBeginEnd">
+								<VBox items="{ path: 'messageProperties>/'}" id="messagePayload" class="sapUiSmallMarginBeginEnd">
 									<VBox class="sapUiSmallMarginTop">
 										<items>
 											<Label text="{messageProperties>propertyName}" required="{path:'messageProperties>mandatory',formatter:'.mandatoryFormatter'}"/>
-											<Select items="{ path: 'hardwareProperties>/HardwareProp/SensorTag'}" width="100%" selectedKey="default">
+											<Select items="{ path: 'hardwareProperties>/HardwareProp/SensorTag'}" width="100%">
 												<items>
-													<core:Item key="default" text="Default Value"/>
 													<core:Item key="{hardwareProperties>Property}" text="{hardwareProperties>Property}"/>
 												</items>
 											</Select>
