@@ -7,49 +7,47 @@
 					<ScrollContainer height="90%" vertical="true">
 						<content>
 							<VBox>
-						<f:SimpleForm editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12"
-							adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
-							singleContainerFullSize="false">
-							<f:content>
-								<Label text="uid"/>
-								<Input value="{deviceDetails>/uid}" editable="false"/>
-								<Label text="Device ID"/>
-								<Input value="{deviceDetails>/deviceId}" editable="false"/>
-								<Label text="Device GUID"/>
-								<Input value="{deviceDetails>/deviceGuid}" editable="false"/>
-								<Label text="Device Category"/>
-								<Input value="{deviceDetails>/category}" editable="false"/>
-								<Label text="Device Type"/>
-								<Input value="{deviceDetails>/deviceType}" editable="false"/>
-								<Label text="Device Type GUID"/>
-								<Input value="{deviceDetails>/deviceTypeGuid}" editable="false"/>
-							</f:content>
-						</f:SimpleForm>
-						<f:SimpleForm title="Properties" id="devProps" editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4"
-							labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
-							singleContainerFullSize="false">
-							<f:content></f:content>
-						</f:SimpleForm>
-						<Toolbar >
-							<Title level="H2" text="Payload" class="sapUiSmallMarginBegin"/>
-							<ToolbarSpacer/>
-						</Toolbar>
-						<VBox items="{ path: 'payload>/'}" class="sapUiSmallMargin">
-							<VBox class="sapUiSmallMarginTop">
-								<items>
-									<Label text="{payload>dataType}"/>
-									<Select items="{ path: 'deviceDetails>/'}" width="100%">
-										<core:Item key="{deviceDetails>guid}" text="{deviceDetails>description}"/>
-									</Select>
-								</items>
+								<f:SimpleForm editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+									adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
+									singleContainerFullSize="false">
+									<f:content>
+										<Label text="uid"/>
+										<Input value="{deviceDetails>/uid}" editable="false"/>
+										<Label text="Device ID"/>
+										<Input value="{deviceDetails>/deviceId}" editable="false"/>
+										<Label text="Device GUID"/>
+										<Input value="{deviceDetails>/deviceGuid}" editable="false"/>
+										<Label text="Device Category"/>
+										<Input value="{deviceDetails>/category}" editable="false"/>
+										<Label text="Device Type"/>
+										<Input value="{deviceDetails>/deviceType}" editable="false"/>
+										<Label text="Device Type GUID"/>
+										<Input value="{deviceDetails>/deviceTypeGuid}" editable="false"/>
+									</f:content>
+								</f:SimpleForm>
+								<f:SimpleForm title="Properties" id="devProps" editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4"
+									labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
+									singleContainerFullSize="false">
+									<f:content></f:content>
+								</f:SimpleForm>
+								<Toolbar >
+									<Title level="H2" text="Payload" class="sapUiSmallMarginBegin"/>
+									<ToolbarSpacer/>
+								</Toolbar>
+								<VBox items="{ path: 'payload>/'}" class="sapUiSmallMargin">
+									<VBox class="sapUiSmallMarginTop">
+										<items>
+											<Label text="{payload>propertyName}"/>
+											<Select items="{ path: 'deviceDetails>/'}" width="100%">
+												<core:Item key="{deviceDetails>guid}" text="{deviceDetails>description}"/>
+											</Select>
+										</items>
+									</VBox>
+								</VBox>
 							</VBox>
-						</VBox>
-						</VBox>
 						</content>
 					</ScrollContainer>
-					
-						<Button width="100%" type="Emphasized" text="OffBoard" class="sapUiTinyMarginTop" press="offBoard"/>
-					
+					<Button width="100%" type="Emphasized" text="OffBoard" class="sapUiTinyMarginTop" press="offBoard"/>
 				</content>
 			</Page>
 		</pages>

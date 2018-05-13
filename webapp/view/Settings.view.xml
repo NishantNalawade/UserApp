@@ -4,26 +4,47 @@
 		<pages>
 			<Page title="Settings" showNavButton="true" navButtonPress="navBack">
 				<content>
-					<VBox class="sapUiSmallMargin">
-						<f:SimpleForm id="settingsForm" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12"
-							adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
-							singleContainerFullSize="false" ariaLabelledBy="Title1">
-							<f:content>
-								<Label text="Device Category"/>
-								<ComboBox items="{ path: 'categories>/'}" change="onCategorySelect" id="selectCategory" placeholder="Select Category">
-									<core:Item key="{categories>id}" text="{categories>description}"/>
-								</ComboBox>
-								<Label text="Device Type"/>
-								<ComboBox items="{ path: 'deviceTypes>/'}" change="onTypeSelect" id="selectDeviceType" placeholder="Select Device Type">
-									<core:Item key="{deviceTypes>guid}" text="{deviceTypes>extId}"/>
-								</ComboBox>
-							</f:content>
-						</f:SimpleForm>
-						<List headerText="Properties" items="{ path: 'deviceProperties>/', sorter: { path: 'uid' } }" noDataText="No Properties Found">
-							<StandardListItem title="{deviceProperties>propertyName}" description="{deviceProperties>dataType}"/>
-						</List>
-						<Button id="saveButton" width="100%" type="Emphasized" text="Save" press="onSave" class="sapUiTinyMarginTop" enabled="false"/>
-					</VBox>
+					<ScrollContainer height="90%" vertical="true">
+						<content>
+							<VBox class="sapUiSmallMargin">
+								<f:SimpleForm id="settingsForm" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+									adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
+									singleContainerFullSize="false" ariaLabelledBy="Title1">
+									<f:content>
+										<Label text="Device Category"/>
+										<ComboBox items="{ path: 'categories>/'}" change="onCategorySelect" id="selectCategory" placeholder="Select Category">
+											<core:Item key="{categories>id}" text="{categories>description}"/>
+										</ComboBox>
+										<Label text="Device Type"/>
+										<ComboBox items="{ path: 'deviceTypes>/'}" change="onTypeSelect" id="selectDeviceType" placeholder="Select Device Type">
+											<core:Item key="{deviceTypes>guid}" text="{deviceTypes>extId}"/>
+										</ComboBox>
+									</f:content>
+								</f:SimpleForm>
+								<List headerText="Properties" items="{ path: 'deviceProperties>/', sorter: { path: 'uid' } }" noDataText="No Properties Found">
+									<StandardListItem title="{deviceProperties>propertyName}" description="{deviceProperties>dataType}"/>
+								</List>
+								<Toolbar >
+									<Title level="H2" text="Payload Message" class="sapUiSmallMarginBegin sapUiSmallMarginTop"/>
+									<ToolbarSpacer/>
+								</Toolbar>
+								<VBox items="{ path: 'messageProperties>/'}" class="sapUiSmallMarginBeginEnd">
+									<VBox class="sapUiSmallMarginTop">
+										<items>
+											<Label text="{messageProperties>propertyName}" required="{path:'messageProperties>mandatory',formatter:'.mandatoryFormatter'}"/>
+											<Select items="{ path: 'hardwareProperties>/HardwareProp/SensorTag'}" width="100%" selectedKey="default">
+												<items>
+													<core:Item key="default" text="Default Value"/>
+													<core:Item key="{hardwareProperties>Property}" text="{hardwareProperties>Property}"/>
+												</items>
+											</Select>
+										</items>
+									</VBox>
+								</VBox>
+							</VBox>
+						</content>
+					</ScrollContainer>
+					<Button id="saveButton" width="100%" type="Emphasized" text="Save" press="onSave" class="sapUiTinyMarginTop" enabled="false"/>
 				</content>
 			</Page>
 		</pages>
