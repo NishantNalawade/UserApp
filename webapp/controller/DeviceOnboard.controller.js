@@ -3,18 +3,20 @@ sap.ui.define([
 	"sap/ui/model/json/JSONModel",
 	"sap/ui/core/routing/History",
 	"sap/m/MessageToast",
-	"sap/ndc/BarcodeScanner"
-], function(Controller, JSONModel, History, MessageToast) {
+	"sap/ndc/BarcodeScanner",
+	"sap/m/Dialog"
+], function(Controller, JSONModel, History, MessageToast, Dialog) {
 	"use strict";
 
 	return Controller.extend("userapp.UserApp.controller.DeviceOnboard", {
 		oDeviceModel: new JSONModel(),
 		sTenantId: null,
 		sDeviceId: null,
+		oPayloadDialog: null,
 		onInit: function() {
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			oRouter.getRoute("DeviceOnboard").attachPatternMatched(this._onRouteMatched, this);
-			this._getDataFromStorage();
+			//this._getDataFromStorage();
 			this.getView().setModel(this.oDeviceModel, "QRdata");
 			this._getHardwareProperties();
 		},
@@ -124,6 +126,8 @@ sap.ui.define([
 						"text": i
 					});
 					var Input = new sap.m.Input().bindProperty("value", "QRdata>/data/" + String(i));
+					//Input.bindProperty("type", "");
+					//this is to bind the data type of the input box, but right now dataType is not coming in QR or localStorage
 					form.addContent(Label);
 					form.addContent(Input);
 				}
@@ -145,13 +149,53 @@ sap.ui.define([
 				function(mResult) {
 					that.oDeviceModel.setJSON(mResult.text);
 					that.addprops(that);
+					that._checkDeviceMapping(that);
 					//dialog.close();
 				},
 				function(Error) {
 					MessageToast.show("Scanning failed: " + Error);
-
 				}
 			);
+		},
+		closeDialog: function() {
+			this.oPayloadDialog.close();
+			//this.oPayloadDialog.getAggregation("buttons")[0].setText("Save");
+		},
+		_openPayloadFragment: function() {
+			if (!this.oPayloadDialog) {
+				this.oPayloadDialog = sap.ui.xmlfragment("userapp.UserApp.fragment.MessagePayload", this);
+				this.getView().addDependent(this.oPayloadDialog);
+			}
+			this.oPayloadDialog.open();
+		},
+		_getMessageProperties: function(sTypeGUID) {
+			var sUrl = "/gatewaytest/tenants/" + this.sTenantId + "/" + sTypeGUID + "/messageProperties";
+			var oView = this.getView();
+			$.ajax({
+				url: sUrl,
+				method: 'GET',
+				crossDomain: true,
+				success: function(data) {
+
+					var oModel = new JSONModel();
+					var sKey=Object.keys(data)[0];
+					oModel.setData(data[sKey]);
+					oView.setModel(oModel, "messageProperties");
+				},
+				error: function(e) {
+					//error code
+				}
+			});
+		},
+		_checkDeviceMapping: function(that) {
+			var qrData = that.oDeviceModel.getData();
+			var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
+			var loacalData = JSON.parse(oStorage.get("storeDeviceProperties"));
+			if (loacalData.deviceType !== qrData.deviceType) {
+				that._getMessageProperties(qrData.deviceTypeGuid);
+				that._openPayloadFragment();
+				
+			}
 		}
 	});
 
