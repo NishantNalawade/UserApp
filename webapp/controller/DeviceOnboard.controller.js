@@ -161,10 +161,13 @@ sap.ui.define([
 		savePayload: function(oEvent) {
 			var oItems = oEvent.getSource().getParent().getContent()[0].getItems();
 			var oProps = this.getView().getModel("messageProperties").getData();
+			var oMessageProperties={};
 			for (var i = 0; i < oItems.length; i++) {
 				var sVal = oItems[i].getItems()[1].getSelectedKey();
 				oProps[i].propertyValue = sVal;
+				oMessageProperties[oProps[i].propertyName]=sVal;
 			}
+			this.oDeviceModel.getData().messageProperties=JSON.stringify(oMessageProperties);
 			var oModel = new JSONModel();
 			oModel.setData(oProps);
 			this.getView().setModel(oModel, "messageProperties");
