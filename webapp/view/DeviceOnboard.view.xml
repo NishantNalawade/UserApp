@@ -4,37 +4,63 @@
 		<pages>
 			<Page title="Onboard Device" showNavButton="true" navButtonPress="navBack">
 				<content>
-					<VBox>
-						<f:SimpleForm editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12"
-							adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
-							singleContainerFullSize="false">
-							<f:toolbar>
-								<Toolbar >
-									<Title text="Device Details" level="H4" titleStyle="H4"/>
-									<ToolbarSpacer/>
-									<Button icon="sap-icon://bar-code" text="Scan" press="onScan"/>
-								</Toolbar>
-							</f:toolbar>
-							<f:content>
-								<Label text="UID"/>
-								<Input value="{QRdata>/uid}" />	
-								<Label text="Device ID"/>
-								<Input value="{QRdata>/deviceId}" />
-								<Label text="Device Category"/>
-								<Input value="{QRdata>/category}" editable="false"/>
-								<Label text="Device Type"/>
-								<Input value="{QRdata>/deviceType}" editable="false"/>
-							
-							</f:content>
-						</f:SimpleForm>
-						<f:SimpleForm id="propertiesList" title="Properties" editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4"
-							labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
-							singleContainerFullSize="false" >
-							<f:content>
-							</f:content>
-						</f:SimpleForm>
-						<Button width="100%" type="Emphasized" text="Onboard" class="sapUiTinyMarginTop" press="onBoardDevice"/>
-					</VBox>
+					<ScrollContainer height="90%" vertical="true">
+						<content>
+							<VBox>
+								<f:SimpleForm editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12"
+									adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1"
+									singleContainerFullSize="false">
+									<f:toolbar>
+										<Toolbar >
+											<Title text="Device Details" level="H4" titleStyle="H4"/>
+											<ToolbarSpacer/>
+											<Button icon="sap-icon://bar-code" text="Scan" press="onScan"/>
+										</Toolbar>
+									</f:toolbar>
+									<f:content>
+										<Label text="UID"/>
+										<Input value="{QRdata>/uid}"/>
+										<Label text="Device ID"/>
+										<Input value="{QRdata>/deviceId}"/>
+										<Label text="Device Category"/>
+										<Input value="{QRdata>/category}" editable="false"/>
+										<Label text="Device Type"/>
+										<Input value="{QRdata>/deviceType}" editable="false"/>
+									</f:content>
+								</f:SimpleForm>
+								<IconTabBar >
+									<items>
+										<IconTabFilter text="DEVICE PROPERTIES">
+											<content>
+												<f:SimpleForm id="propertiesList" title="Properties" editable="false" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3"
+													labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2"
+													columnsL="1" columnsM="1" singleContainerFullSize="false">
+													<f:content></f:content>
+												</f:SimpleForm>
+											</content>
+										</IconTabFilter>
+										<IconTabFilter text="MESSAGE PAYLOAD">
+											<content>
+												<Toolbar >
+													<Title level="H2" text="Payload Message" class="sapUiSmallMarginBegin sapUiSmallMarginTop"/>
+													<ToolbarSpacer/>
+												</Toolbar>
+												<VBox items="{ path: 'messageProperties>/'}" id="messagePayload" class="sapUiSmallMarginBeginEnd">
+													<VBox class="sapUiSmallMarginTop">
+														<items>
+															<Label text="{messageProperties>propertyName}" required="{path:'messageProperties>mandatory',formatter:'.mandatoryFormatter'}"/>
+															<Input value="{messageProperties>propertyValue}" editable="false"/>
+														</items>
+													</VBox>
+												</VBox>
+											</content>
+										</IconTabFilter>
+									</items>
+								</IconTabBar>
+							</VBox>
+						</content>
+					</ScrollContainer>
+					<Button width="100%" type="Emphasized" text="Onboard" class="sapUiTinyMarginTop" press="onBoardDevice"/>
 				</content>
 			</Page>
 		</pages>

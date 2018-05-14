@@ -14,19 +14,44 @@ sap.ui.define([
 		onInit: function() {
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			oRouter.getRoute("DeviceOnboard").attachPatternMatched(this._onRouteMatched, this);
-			this.getDataFromStorage();
+			this._getDataFromStorage();
 			this.getView().setModel(this.oDeviceModel, "QRdata");
+			this._getHardwareProperties();
 		},
 		onAfterRendering: function() {
 			//console.log("hi")
 		},
-		getDataFromStorage: function() {
+		mandatoryFormatter: function(mandatory) {
+			if (mandatory === "true") {
+				return true;
+			} else {
+				return false;
+			}
+
+		},
+		_getDataFromStorage: function() {
 			jQuery.sap.require("jquery.sap.storage");
 			var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
 			var sDeviceprops = oStorage.get("storeDeviceProperties");
+			var oMessageProps = JSON.parse(oStorage.get("storeMessageProperties"));
+
+			var oMessageJson = [];
+			for (var i = 0; i < Object.keys(oMessageProps).length; i++) {
+				var sKey = Object.keys(oMessageProps)[i];
+				var temp = {
+					"propertyName": sKey,
+					"propertyValue": oMessageProps[sKey]
+				};
+				oMessageJson.push(temp);
+			}
+
+			var oModel = new JSONModel();
+			oModel.setData(oMessageJson);
+
+			this.getView().setModel(oModel, "messageProperties");
+
 			if (sDeviceprops) {
 				this.oDeviceModel.setJSON(sDeviceprops);
-				// var tempJSON=JSON.parse(sDeviceprops);
 			}
 			var props = this.oDeviceModel.getData().oProperties;
 			var data = {};
@@ -36,12 +61,30 @@ sap.ui.define([
 			delete this.oDeviceModel.getData().oPoperties;
 			this.oDeviceModel.getData().data = data;
 			this.addprops(this);
+			//this.addMessage();
 		},
 		_onRouteMatched: function(oEvent) {
 			this.sTenantId = oEvent.getParameter("arguments").tenantId;
 			this.sDeviceId = oEvent.getParameter("arguments").deviceId;
-			this.getDataFromStorage();
-			//this.getView().setModel(this.oDeviceModel,"QRdata");
+			this._getDataFromStorage();
+		},
+		_getHardwareProperties: function() {
+			var sUrl = "/gatewaytest/tenants/" + this.sTenantId + "/hardwareProperties";
+			var oView = this.getView();
+			$.ajax({
+				url: sUrl,
+				method: 'GET',
+				success: function(data) {
+
+					var oModel = new JSONModel();
+
+					oModel.setJSON(data);
+					oView.setModel(oModel, "hardwareProperties");
+				},
+				error: function(e) {
+					//error code
+				}
+			});
 		},
 		onBoardDevice: function(oEvent) {
 			var that = this;
@@ -109,83 +152,6 @@ sap.ui.define([
 
 				}
 			);
-
-			/*
-			this.codeScanned = false;
-			var container = new sap.m.VBox({
-				"width": "400px",
-				"height": "400px"
-			});
-			var button = new sap.m.Button({
-				text: "Cancel",
-				width: "100%",
-				type: "Reject",
-				press: function() {
-					dialog.close();
-				}
-			});
-			var dialog = new sap.m.Dialog({
-				title: "QR Scanner",
-				content: [
-					container,
-					button
-				]
-			});
-			dialog.open();
-			var video = document.createElement("video");
-			video.autoplay = true;
-			var that = this;
-			qrcode.callback = function(data) {
-				if (data !== "error decoding QR Code") {
-					this.codeScanned = true;
-					that._oScannedInspLot = data;
-
-					that.oDeviceModel.setJSON(data);
-					//	this.getView().setModel(that.oDeviceModel,"QRdata");
-					that.addprops(that);
-					dialog.close();
-				}
-			}.bind(this);
-
-			var canvas = document.createElement("canvas");
-			canvas.width = 400;
-			canvas.height = 400;
-			navigator.mediaDevices.getUserMedia({
-					audio: false,
-					video: {
-						facingMode: "environment",
-						width: {
-							ideal: 400
-						},
-						height: {
-							ideal: 400
-						}
-					}
-				})
-				.then(function(stream) {
-					video.srcObject = stream;
-					var ctx = canvas.getContext('2d');
-					var loop = (function() {
-						if (this.codeScanned) {
-							video.stop();
-							video.autoplay = false;
-							//console.log(this.codeScanned);
-							video.srcObject = null;
-							return;
-						} else {
-							ctx.drawImage(video, 0, 0);
-							setTimeout(loop, 1000 / 60); // drawing at 30fps
-							qrcode.decode(canvas.toDataURL());
-						}
-					}.bind(this));
-					loop();
-				}.bind(this))
-				.catch(function(error) {
-					sap.m.MessageBox.error("Unable to get Video Stream");
-				});
-
-			container.getDomRef().appendChild(canvas);
-			*/
 		}
 	});
 
