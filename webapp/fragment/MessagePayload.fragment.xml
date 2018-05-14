@@ -1,7 +1,7 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
-	<Dialog id="tenantOnboard" title="Message Payload" stretch="true">
+	<Dialog title="Message Payload" stretch="true">
 		<content>
-			<VBox items="{ path: 'messageProperties>/'}" id="messagePayload" class="sapUiSmallMarginBeginEnd">
+			<VBox items="{ path: 'messageProperties>/'}" id="messagePayloadFragment" class="sapUiSmallMarginBeginEnd">
 				<VBox class="sapUiSmallMarginTop">
 					<items>
 						<Label text="{messageProperties>propertyName}" required="{path:'messageProperties>mandatory',formatter:'.mandatoryFormatter'}"/>

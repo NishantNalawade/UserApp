@@ -18,6 +18,7 @@ sap.ui.define([
 			oRouter.getRoute("DeviceOnboard").attachPatternMatched(this._onRouteMatched, this);
 			//this._getDataFromStorage();
 			this.getView().setModel(this.oDeviceModel, "QRdata");
+			
 			this._getHardwareProperties();
 		},
 		onAfterRendering: function() {
@@ -34,9 +35,9 @@ sap.ui.define([
 		_getDataFromStorage: function() {
 			jQuery.sap.require("jquery.sap.storage");
 			var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
-			var sDeviceprops = oStorage.get("storeDeviceProperties");
+			var sDeviceprops = JSON.parse(oStorage.get("storeDeviceProperties"));
 			var oMessageProps = JSON.parse(oStorage.get("storeMessageProperties"));
-
+			sDeviceprops.messageProperties=JSON.stringify(oMessageProps);
 			var oMessageJson = [];
 			for (var i = 0; i < Object.keys(oMessageProps).length; i++) {
 				var sKey = Object.keys(oMessageProps)[i];
@@ -51,9 +52,9 @@ sap.ui.define([
 			oModel.setData(oMessageJson);
 
 			this.getView().setModel(oModel, "messageProperties");
-
+			
 			if (sDeviceprops) {
-				this.oDeviceModel.setJSON(sDeviceprops);
+				this.oDeviceModel.setData(sDeviceprops);
 			}
 			var props = this.oDeviceModel.getData().oProperties;
 			var data = {};
@@ -157,6 +158,18 @@ sap.ui.define([
 				}
 			);
 		},
+		savePayload: function(oEvent) {
+			var oItems = oEvent.getSource().getParent().getContent()[0].getItems();
+			var oProps = this.getView().getModel("messageProperties").getData();
+			for (var i = 0; i < oItems.length; i++) {
+				var sVal = oItems[i].getItems()[1].getSelectedKey();
+				oProps[i].propertyValue = sVal;
+			}
+			var oModel = new JSONModel();
+			oModel.setData(oProps);
+			this.getView().setModel(oModel, "messageProperties");
+			this.closeDialog();
+		},
 		closeDialog: function() {
 			this.oPayloadDialog.close();
 			//this.oPayloadDialog.getAggregation("buttons")[0].setText("Save");
@@ -178,7 +191,7 @@ sap.ui.define([
 				success: function(data) {
 
 					var oModel = new JSONModel();
-					var sKey=Object.keys(data)[0];
+					var sKey = Object.keys(data)[0];
 					oModel.setData(data[sKey]);
 					oView.setModel(oModel, "messageProperties");
 				},
@@ -194,7 +207,6 @@ sap.ui.define([
 			if (loacalData.deviceType !== qrData.deviceType) {
 				that._getMessageProperties(qrData.deviceTypeGuid);
 				that._openPayloadFragment();
-				
 			}
 		}
 	});
