@@ -13,6 +13,7 @@ sap.ui.define([
 		sTenantId: null,
 		sDeviceId: null,
 		oPayloadDialog: null,
+		oMessagePayloads:[],
 		onInit: function() {
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			oRouter.getRoute("DeviceOnboard").attachPatternMatched(this._onRouteMatched, this);
@@ -35,8 +36,11 @@ sap.ui.define([
 		_getDataFromStorage: function() {
 			jQuery.sap.require("jquery.sap.storage");
 			var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
+			if(oStorage.get("storeDeviceProperties")&&oStorage.get("storeMessageProperties"))
+			{
 			var sDeviceprops = JSON.parse(oStorage.get("storeDeviceProperties"));
 			var oMessageProps = JSON.parse(oStorage.get("storeMessageProperties"));
+			}
 			sDeviceprops.messageProperties=JSON.stringify(oMessageProps);
 			var oMessageJson = [];
 			for (var i = 0; i < Object.keys(oMessageProps).length; i++) {
@@ -56,12 +60,12 @@ sap.ui.define([
 			if (sDeviceprops) {
 				this.oDeviceModel.setData(sDeviceprops);
 			}
-			var props = this.oDeviceModel.getData().oProperties;
+			var props = this.oDeviceModel.getData().data;
 			var data = {};
 			for (var i in props) {
 				data[props[i].propertyName] = "";
 			}
-			delete this.oDeviceModel.getData().oPoperties;
+		
 			this.oDeviceModel.getData().data = data;
 			this.addprops(this);
 			//this.addMessage();
@@ -95,6 +99,7 @@ sap.ui.define([
 			oModel.setData(JSON.parse(JSON.stringify(that.oDeviceModel.getData()))); //to make a copy of device model
 			var props = oModel.getData();
 			props.data = JSON.stringify(oModel.getData().data);
+			
 			var sUrl = "/gatewaytest/tenants/" + this.sTenantId + "/devices";
 			$.ajax({
 				url: sUrl,
@@ -158,6 +163,11 @@ sap.ui.define([
 				}
 			);
 		},
+		onMessageSelect: function(oEvent){
+				var sMessageType = oEvent.getSource().getSelectedKey();
+				var oModel=new JSONModel(this.oMessagePayloads[sMessageType]);
+				this.getView().setModel(oModel, "messageProperties");
+		},
 		savePayload: function(oEvent) {
 			var oItems = oEvent.getSource().getParent().getContent()[0].getItems();
 			var oProps = this.getView().getModel("messageProperties").getData();
@@ -187,16 +197,26 @@ sap.ui.define([
 		_getMessageProperties: function(sTypeGUID) {
 			var sUrl = "/gatewaytest/tenants/" + this.sTenantId + "/" + sTypeGUID + "/messageProperties";
 			var oView = this.getView();
+			var that =this;
 			$.ajax({
 				url: sUrl,
 				method: 'GET',
 				crossDomain: true,
 				success: function(data) {
+					var keys=Object.keys(data);
+					var MessageTypes=[];
+					that.oMessagePayloads=data;
+					for(var i in keys){
+					MessageTypes.push({"value":keys[i] });
+					}
+					var oModel= new JSONModel();
+					oModel.setData({"MessageTypes":MessageTypes});
+					oView.setModel(oModel, "messageTypes");
 
-					var oModel = new JSONModel();
-					var sKey = Object.keys(data)[0];
-					oModel.setData(data[sKey]);
-					oView.setModel(oModel, "messageProperties");
+					// var oModel = new JSONModel();
+					// var sKey = Object.keys(data)[0];
+					// oModel.setData(data[sKey]);
+					// oView.setModel(oModel, "messageProperties");
 				},
 				error: function(e) {
 					//error code

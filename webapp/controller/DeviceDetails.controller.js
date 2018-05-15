@@ -31,15 +31,14 @@ sap.ui.define([
 			this.sTenantId = oEvent.getParameter("arguments").tenantId;
 			this.sDeviceId = oEvent.getParameter("arguments").deviceId;
 			this._getDeviceDetail();
-			var oModel = new JSONModel();
-			oModel.loadData("model/mockPayload.json");
-			this.getView().setModel(oModel, "payload");
+			// var oModel = new JSONModel();
+			// oModel.loadData("model/mockPayload.json");
+			// this.getView().setModel(oModel, "payload");
 			//this.getView().byId("detailsPage").setTitle(sDeviceId);
 		},
-		addprops: function(that) {
-			var props = that.getView().getModel("deviceDetails").getData().data;
+		addprops: function(that,props,formId) {
 			props = JSON.parse(props);
-			var form = that.getView().byId("devProps");
+			var form = that.getView().byId(formId);
 			form.removeAllContent();
 			for (var i in props) {
 				if (props.hasOwnProperty(i)) {
@@ -92,7 +91,10 @@ sap.ui.define([
 				crossDomain: true,
 				success: function(data) {
 					oView.setModel(new JSONModel(data), "deviceDetails");
-					that.addprops(that);
+					var messageProps=data.messageProperties;
+					var props = data.data;
+					that.addprops(that,props,"devProps");
+					that.addprops(that,messageProps,"payload");
 				},
 				error: function(e) {
 					

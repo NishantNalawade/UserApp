@@ -19,6 +19,10 @@
 										<ComboBox items="{ path: 'deviceTypes>/'}" change="onTypeSelect" id="selectDeviceType" placeholder="Select Device Type">
 											<core:Item key="{deviceTypes>guid}" text="{deviceTypes>extId}"/>
 										</ComboBox>
+										<Label text="Message Type"/>
+										<ComboBox items="{ path: 'messageTypes>/MessageTypes'}" change="onMessageSelect" id="selectMessageType" placeholder="Select Message Type">
+											<core:Item key="{messageTypes>value}" text="{messageTypes>value}"/>
+										</ComboBox>
 									</f:content>
 								</f:SimpleForm>
 								<List headerText="Properties" items="{ path: 'deviceProperties>/', sorter: { path: 'uid' } }" noDataText="No Properties Found">
@@ -32,11 +36,11 @@
 									<VBox class="sapUiSmallMarginTop">
 										<items>
 											<Label text="{messageProperties>propertyName}" required="{path:'messageProperties>mandatory',formatter:'.mandatoryFormatter'}"/>
-											<Select items="{ path: 'hardwareProperties>/HardwareProp/SensorTag'}" width="100%">
+											<ComboBox id="payloadCb" items="{ path: 'hardwareProperties>/HardwareProp/SensorTag'}" width="100%">
 												<items>
 													<core:Item key="{hardwareProperties>Property}" text="{hardwareProperties>Property}"/>
 												</items>
-											</Select>
+											</ComboBox>
 										</items>
 									</VBox>
 								</VBox>

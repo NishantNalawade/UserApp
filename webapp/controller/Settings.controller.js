@@ -11,6 +11,7 @@ sap.ui.define([
 		oCategories: null,
 		oDeviceTypes: null,
 		oProperties: null,
+		oMessagePayloads:[],
 		mandatoryFormatter: function(mandatory) {
 			if(mandatory==="true"){
 				return true;
@@ -36,6 +37,9 @@ sap.ui.define([
 			if (this.getView().getModel("deviceProperties") != null) {
 				this.getView().getModel("deviceProperties").setData(null);
 			}
+				if (this.getView().getModel("messageTypes") != null) {
+				this.getView().getModel("messageTypes").setData(null);
+			}
 
 		},
 		onTypeSelect: function(oEvent) {
@@ -44,7 +48,18 @@ sap.ui.define([
 			this._getDeviceProperties(sTypeGUID);
 			this._getMessageProperties(sTypeGUID);
 			this._getHardwareProperties();
+				if (this.getView().getModel("messageTypes") != null) {
+				this.getView().getModel("messageTypes").setData(null);
+			}
+			if (this.getView().getModel("messageProperties") != null) {
+				this.getView().getModel("messageProperties").setData(null);
+			}
 			this.getView().byId("saveButton").setEnabled(true);
+		},
+			onMessageSelect: function(oEvent){
+				var sMessageType = oEvent.getSource().getSelectedKey();
+				var oModel=new JSONModel(this.oMessagePayloads[sMessageType]);
+				this.getView().setModel(oModel, "messageProperties");
 		},
 		onInit: function() {
 			jQuery.sap.require("jquery.sap.storage");
@@ -73,6 +88,7 @@ sap.ui.define([
 				}
 			});
 		},
+	
 		_getDeviceTypes: function(sCategoryId) {
 			var that = this;
 			var sUrl = "/gatewaytest/tenants/" + this.sTenantId + "/" + sCategoryId + "/deviceTypes";
@@ -113,17 +129,23 @@ sap.ui.define([
 		},
 		_getMessageProperties: function(sTypeGUID) {
 			var sUrl = "/gatewaytest/tenants/" + this.sTenantId + "/" + sTypeGUID + "/messageProperties";
+			var that=this;
 			var oView = this.getView();
+			
 			$.ajax({
 				url: sUrl,
 				method: 'GET',
 				crossDomain: true,
 				success: function(data) {
-
-					var oModel = new JSONModel();
-					var sKey=Object.keys(data)[0];
-					oModel.setData(data[sKey]);
-					oView.setModel(oModel, "messageProperties");
+					var keys=Object.keys(data);
+					var MessageTypes=[];
+					that.oMessagePayloads=data;
+					for(var i in keys){
+					MessageTypes.push({"value":keys[i] });
+					}
+					var oModel= new JSONModel();
+					oModel.setData({"MessageTypes":MessageTypes});
+					oView.setModel(oModel, "messageTypes");
 				},
 				error: function(e) {
 					//error code
@@ -139,8 +161,9 @@ sap.ui.define([
 				success: function(data) {
 
 					var oModel = new JSONModel();
-
 					oModel.setJSON(data);
+					data=JSON.parse(data);
+				//	oView.byId("payloadCb").setSelectedKey(data.HardwareProp.SensorTag.Property);
 					oView.setModel(oModel, "hardwareProperties");
 				},
 				error: function(e) {
@@ -154,15 +177,16 @@ sap.ui.define([
 			var oMessagePayload={};
 			for(var i=0;i<oMessageItems.length;i++){
 				var sKey=oMessageItems[i].getItems()[0].getText();
-				var sValue=oMessageItems[i].getItems()[1].getSelectedKey();
+				var sValue=oMessageItems[i].getItems()[1].getValue();
 				oMessagePayload[sKey]=sValue;
 			}
 			return oMessagePayload;
 		},
 
 		onSave: function() {
-			var sCategory = this.getView().byId("selectCategory").getSelectedItem().getText();
+			var sCategory = this.getView().byId("selectCategory").getValue();
 			var oType = this.getView().byId("selectDeviceType").getSelectedItem();
+			var sDeviceMessageType=this.getView().byId("selectMessageType").getValue();
 			var sType = oType.getText();
 			var sTypeGUID = oType.getKey();
 			var oData = this.getView().getModel("deviceProperties").getData();
@@ -172,7 +196,8 @@ sap.ui.define([
 				"category": sCategory,
 				"deviceType": sType,
 				"deviceTypeGuid": sTypeGUID,
-				"oProperties": oData
+				"deviceMessageType":sDeviceMessageType,
+				"data": oData
 			};
 
 

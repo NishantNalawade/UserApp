@@ -4,6 +4,10 @@
 			<VBox items="{ path: 'messageProperties>/'}" id="messagePayloadFragment" class="sapUiSmallMarginBeginEnd">
 				<VBox class="sapUiSmallMarginTop">
 					<items>
+						<Label text="Message Type"/>
+						<ComboBox items="{ path: 'messageTypes>/MessageTypes'}" change="onMessageSelect" id="selectMessageType" placeholder="Select Message Type">
+						     <core:Item key="{messageTypes>value}" text="{messageTypes>value}"/>
+						</ComboBox>
 						<Label text="{messageProperties>propertyName}" required="{path:'messageProperties>mandatory',formatter:'.mandatoryFormatter'}"/>
 						<Select items="{ path: 'hardwareProperties>/HardwareProp/SensorTag'}" width="100%">
 							<items>

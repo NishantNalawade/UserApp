@@ -5,5 +5,10 @@
       "templateVersion": "1.4.0",
       "dateTimeStamp": "Thu, 03 May 2018 09:06:04 GMT"
     }
-  ]
+  ],
+  "hcpdeploy": {
+    "account": "i339164trial",
+    "name": "userapp",
+    "lastVersionWeTriedToDeploy": "1.0.2"
+  }
 }

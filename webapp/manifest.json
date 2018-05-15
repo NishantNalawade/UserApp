@@ -62,28 +62,64 @@
 			}
 		},
 		"resources": {
-			"css": [{
-				"uri": "css/style.css"
-			}],
-			"js":[
-				{"uri":"js/grid.js"},
-				{"uri":"js/version.js"},
-				{"uri":"js/detector.js"},
-				{"uri":"js/formatinf.js"},
-				{"uri":"js/errorlevel.js"},
-				{"uri":"js/bitmat.js"},
-				{"uri":"js/datablock.js"},
-				{"uri":"js/bmparser.js"},
-				{"uri":"js/datamask.js"},
-				{"uri":"js/rsdecoder.js"},
-				{"uri":"js/gf256poly.js"},
-				{"uri":"js/gf256.js"},
-				{"uri":"js/decoder.js"},
-				{"uri":"js/qrcode.js"},
-				{"uri":"js/findpat.js"},
-				{"uri":"js/alignpat.js"},
-				{"uri":"js/databr.js"}
-				]
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			],
+			"js": [
+				{
+					"uri": "js/grid.js"
+				},
+				{
+					"uri": "js/version.js"
+				},
+				{
+					"uri": "js/detector.js"
+				},
+				{
+					"uri": "js/formatinf.js"
+				},
+				{
+					"uri": "js/errorlevel.js"
+				},
+				{
+					"uri": "js/bitmat.js"
+				},
+				{
+					"uri": "js/datablock.js"
+				},
+				{
+					"uri": "js/bmparser.js"
+				},
+				{
+					"uri": "js/datamask.js"
+				},
+				{
+					"uri": "js/rsdecoder.js"
+				},
+				{
+					"uri": "js/gf256poly.js"
+				},
+				{
+					"uri": "js/gf256.js"
+				},
+				{
+					"uri": "js/decoder.js"
+				},
+				{
+					"uri": "js/qrcode.js"
+				},
+				{
+					"uri": "js/findpat.js"
+				},
+				{
+					"uri": "js/alignpat.js"
+				},
+				{
+					"uri": "js/databr.js"
+				}
+			]
 		},
 		"routing": {
 			"config": {
@@ -95,37 +131,43 @@
 				"controlId": "idAppControl",
 				"clearControlAggregation": false
 			},
-			"routes": [{
-				"name": "Home",
-				"pattern": "",
-				"target": [
-					"Home"
-				]
-			},{
-				"name": "DeviceManager",
-				"pattern": "{tenantId}/devices",
-				"target": [
-					"DeviceManager"
-				]
-			}, {
-				"name": "DeviceDetails",
-				"pattern": "{tenantId}/devices/{deviceId}",
-				"target": [
-					"DeviceDetails"
-				]
-			}, {
-				"name": "DeviceOnboard",
-				"pattern": "{tenantId}/onboard",
-				"target": [
-					"DeviceOnboard"
-				]
-			}, {
-				"name": "Settings",
-				"pattern": "settings",
-				"target": [
-					"Settings"
-				]
-			}],
+			"routes": [
+				{
+					"name": "Home",
+					"pattern": "",
+					"target": [
+						"Home"
+					]
+				},
+				{
+					"name": "DeviceManager",
+					"pattern": "{tenantId}/devices",
+					"target": [
+						"DeviceManager"
+					]
+				},
+				{
+					"name": "DeviceDetails",
+					"pattern": "{tenantId}/devices/{deviceId}",
+					"target": [
+						"DeviceDetails"
+					]
+				},
+				{
+					"name": "DeviceOnboard",
+					"pattern": "{tenantId}/onboard",
+					"target": [
+						"DeviceOnboard"
+					]
+				},
+				{
+					"name": "Settings",
+					"pattern": "settings",
+					"target": [
+						"Settings"
+					]
+				}
+			],
 			"targets": {
 				"Home": {
 					"viewType": "XML",
@@ -175,5 +217,9 @@
 				}
 			}
 		}
+	},
+	"sap.platform.hcp": {
+		"uri": "webapp",
+		"_version": "1.1.0"
 	}
 }
