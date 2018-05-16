@@ -54,15 +54,6 @@ sap.ui.define([
 			var oMessageProps = JSON.parse(oStorage.get("storeMessageProperties"));
 			}
 			sDeviceprops.messageProperties=JSON.stringify(oMessageProps);
-			// var oMessageJson = [];
-			// for (var i = 0; i < Object.keys(oMessageProps).length; i++) {
-			// 	var sKey = Object.keys(oMessageProps)[i];
-			// 	var temp = {
-			// 		"propertyName": sKey,
-			// 		"propertyValue": oMessageProps[sKey]
-			// 	};
-			// 	oMessageJson.push(temp);
-			// }
 			var oMessageJson=this.jsonToArrayConverter(oMessageProps);
 			var oModel = new JSONModel();
 			oModel.setData(oMessageJson);
@@ -79,7 +70,6 @@ sap.ui.define([
 		
 			this.oDeviceModel.getData().data = data;
 			this.addprops(this);
-			//this.addMessage();
 		},
 		_onRouteMatched: function(oEvent) {
 			this.sTenantId = oEvent.getParameter("arguments").tenantId;
@@ -104,13 +94,12 @@ sap.ui.define([
 				}
 			});
 		},
-		onBoardDevice: function(oEvent) {
+		onBoardDevice: function() {
 			var that = this;
 			var oModel = new JSONModel();
 			oModel.setData(JSON.parse(JSON.stringify(that.oDeviceModel.getData()))); //to make a copy of device model
 			var props = oModel.getData();
 			props.data = JSON.stringify(oModel.getData().data);
-			
 			var sUrl = "/gatewaytest/tenants/" + this.sTenantId + "/devices";
 			$.ajax({
 				url: sUrl,
@@ -120,7 +109,7 @@ sap.ui.define([
 				method: 'POST',
 				crossDomain: true,
 				data: JSON.stringify(props),
-				success: function(data) {
+				success: function() {
 					MessageToast.show("Device Onboarded Succesfully");
 					that.navBack();
 				},
@@ -179,8 +168,7 @@ sap.ui.define([
 				var oModel=new JSONModel(this.oMessagePayloads[sMessageType]);
 				this.getView().setModel(oModel, "messagePropertiesQr");
 		},
-		_jsonMessagePayload:function(){
-			var oMessageItems=sap.ui.getCore().byId("messagePayloadQr").getItems();
+		_jsonMessagePayload:function(oMessageItems){
 			var oMessagePayload={};
 			for(var i=0;i<oMessageItems.length;i++){
 				var sKey=oMessageItems[i].getItems()[0].getText();
@@ -189,12 +177,16 @@ sap.ui.define([
 			}
 			return oMessagePayload;
 		},
-		savePayload: function(oEvent) {
-			var jsonPayload=this._jsonMessagePayload();
+		savePayload: function() {
+			var oMessageItems=sap.ui.getCore().byId("messagePayloadQr").getItems();
+			var jsonPayload=this._jsonMessagePayload(oMessageItems);
 			var messsageProps=this.jsonToArrayConverter(jsonPayload);
 			var oModel = new JSONModel();
 			oModel.setData(messsageProps);
 			this.getView().setModel(oModel, "messageProperties");
+			var sDeviceMessageType=sap.ui.getCore().byId("selectMessageQr").getValue();
+			this.oDeviceModel.getData().deviceMessageType=sDeviceMessageType;
+			this.oDeviceModel.getData().messageProperties=JSON.stringify(jsonPayload);
 			this.getView().getModel("messagePropertiesQr").setData(null);
 			this.getView().getModel("messageTypes").setData(null);
 			this.closeDialog();
@@ -242,10 +234,15 @@ sap.ui.define([
 		_checkDeviceMapping: function(that) {
 			var qrData = that.oDeviceModel.getData();
 			var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
-			var loacalData = JSON.parse(oStorage.get("storeDeviceProperties"));
-			if (loacalData.deviceType !== qrData.deviceType) {
+			var localData = JSON.parse(oStorage.get("storeDeviceProperties"));
+			if (localData.deviceType !== qrData.deviceType) {
 				that._getMessageProperties(qrData.deviceTypeGuid);
 				that._openPayloadFragment();
+			}
+			else
+			{
+				qrData.messageProperties=oStorage.get("storeMessageProperties");
+				qrData.deviceMessageType=localData.deviceMessageType;
 			}
 		}
 	});

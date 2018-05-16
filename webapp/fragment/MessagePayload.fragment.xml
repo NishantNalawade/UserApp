@@ -4,7 +4,7 @@
 			<VBox  id="messagePayloadFragment" class="sapUiSmallMarginBeginEnd">
 				
 				<Label text="Message Type"/>
-						<ComboBox items="{ path: 'messageTypes>/MessageTypes'}" change="onMessageSelect" id="selectMessageType" placeholder="Select Message Type">
+						<ComboBox items="{ path: 'messageTypes>/MessageTypes'}" change="onMessageSelect" id="selectMessageQr" placeholder="Select Message Type">
 						     <core:Item key="{messageTypes>value}" text="{messageTypes>value}"/>
 						</ComboBox>
 			
