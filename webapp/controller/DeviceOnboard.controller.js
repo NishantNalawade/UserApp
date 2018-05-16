@@ -14,16 +14,18 @@ sap.ui.define([
 		sDeviceId: null,
 		oPayloadDialog: null,
 		oMessagePayloads:[],
+		oRouter:null,
 		onInit: function() {
-			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-			oRouter.getRoute("DeviceOnboard").attachPatternMatched(this._onRouteMatched, this);
-			//this._getDataFromStorage();
+			this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+			this.oRouter.getRoute("DeviceOnboard").attachPatternMatched(this._onRouteMatched, this);
 			this.getView().setModel(this.oDeviceModel, "QRdata");
-			
 			this._getHardwareProperties();
 		},
 		onAfterRendering: function() {
 			//console.log("hi")
+		},
+		navSettings: function(){
+			this.oRouter.navTo("Settings");
 		},
 		mandatoryFormatter: function(mandatory) {
 			if (mandatory === "true") {
@@ -83,9 +85,7 @@ sap.ui.define([
 				url: sUrl,
 				method: 'GET',
 				success: function(data) {
-
 					var oModel = new JSONModel();
-
 					oModel.setJSON(data);
 					oView.setModel(oModel, "hardwareProperties");
 				},
@@ -132,7 +132,6 @@ sap.ui.define([
 						"text": i
 					});
 					var Input = new sap.m.Input().bindProperty("value", "QRdata>/data/" + String(i));
-					//Input.bindProperty("type", "");
 					//this is to bind the data type of the input box, but right now dataType is not coming in QR or localStorage
 					form.addContent(Label);
 					form.addContent(Input);
@@ -145,8 +144,7 @@ sap.ui.define([
 			if (sPreviousHash !== undefined) {
 				window.history.go(-1);
 			} else {
-				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-				oRouter.navTo("overview", {}, true);
+				this.oRouter.navTo("overview", {}, true);
 			}
 		},
 		onScan: function() {
@@ -156,7 +154,6 @@ sap.ui.define([
 					that.oDeviceModel.setJSON(mResult.text);
 					that.addprops(that);
 					that._checkDeviceMapping(that);
-					//dialog.close();
 				},
 				function(Error) {
 					MessageToast.show("Scanning failed: " + Error);
@@ -220,11 +217,6 @@ sap.ui.define([
 					var oModel= new JSONModel();
 					oModel.setData({"MessageTypes":MessageTypes});
 					oView.setModel(oModel, "messageTypes");
-
-					// var oModel = new JSONModel();
-					// var sKey = Object.keys(data)[0];
-					// oModel.setData(data[sKey]);
-					// oView.setModel(oModel, "messageProperties");
 				},
 				error: function(e) {
 					//error code
