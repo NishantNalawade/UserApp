@@ -3,9 +3,6 @@
 	<App>
 		<pages>
 			<Page title="Onboard Device" showNavButton="true" navButtonPress="navBack">
-				<headerContent>
-					<core:Icon class="iconPadding" src="sap-icon://action-settings" press="navSettings"/>
-				</headerContent>
 				<content>
 					<ScrollContainer height="90%" vertical="true">
 						<content>

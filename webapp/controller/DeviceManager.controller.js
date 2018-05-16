@@ -50,6 +50,7 @@ sap.ui.define([
 							oStorage.clear();
 							that.oRouter.navTo("Home");
 						}
+
 					}
 				}
 			);
@@ -71,6 +72,7 @@ sap.ui.define([
 					that.oDeviceModel.setData(data);
 					that.oDeviceModel.refresh();
 					oView.rerender();
+					// oView.setModel(new JSONModel(data), "devices");
 				},
 				error: function(e) {
 					//error code
@@ -94,6 +96,7 @@ sap.ui.define([
 			return (date.toLocaleString());
 		},
 		onSearch: function(oEvt) {
+
 			// add filter for search
 			var aFilters = [];
 			var sQuery = oEvt.getSource().getValue();
@@ -101,6 +104,7 @@ sap.ui.define([
 				var filter = new Filter("deviceId", sap.ui.model.FilterOperator.Contains, sQuery);
 				aFilters.push(filter);
 			}
+
 			// update list binding
 			var list = this.getView().byId("deviceList");
 			var binding = list.getBinding("items");
