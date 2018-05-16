@@ -9,11 +9,11 @@ sap.ui.define([
 	return Controller.extend("userapp.UserApp.controller.DeviceManager", {
 		oRouter: null,
 		sTenantId: null,
-		oDeviceModel:new JSONModel(),
+		oDeviceModel: new JSONModel(),
 		onInit: function() {
 			this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			this.oRouter.getRoute("DeviceManager").attachPatternMatched(this._onRouteMatched, this);
-			this.getView().setModel(this.oDeviceModel,"devices");
+			this.getView().setModel(this.oDeviceModel, "devices");
 		},
 
 		navSettings: function() {
@@ -57,28 +57,13 @@ sap.ui.define([
 		},
 		_onRouteMatched: function(oEvent) {
 			this.sTenantId = oEvent.getParameter("arguments").tenantId;
-			this._getTenantDetail(this.sTenantId);
+			this.getView().byId("devicePage").setTitle(this.sTenantId);
 			this._getDeviceDetail(this.sTenantId);
-		},
-		_getTenantDetail: function(sTenantId) {
-			var sUrl = "/gatewaytest/tenants/" + sTenantId;
-			var oView = this.getView();
-			$.ajax({
-				url: sUrl,
-				method: 'GET',
-				crossDomain: true,
-				success: function(data) {
-					oView.setModel(new JSONModel(data), "tenant");
-				},
-				error: function(e) {
-					//error code
-				}
-			});
 		},
 		_getDeviceDetail: function(sTenantId) {
 			var sUrl = "/gatewaytest/tenants/" + sTenantId + "/devices";
 			var oView = this.getView();
-			var that=this;
+			var that = this;
 			$.ajax({
 				url: sUrl,
 				method: 'GET',
@@ -106,8 +91,8 @@ sap.ui.define([
 			return icon;
 
 		},
-		timeFormatter:function(timestamp){
-			var date=new Date(timestamp);
+		timeFormatter: function(timestamp) {
+			var date = new Date(timestamp);
 			return (date.toLocaleString());
 		},
 		onSearch: function(oEvt) {

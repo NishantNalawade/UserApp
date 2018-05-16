@@ -1,34 +1,35 @@
 /* Enter your custom styles here */
-.iconPadding{
-	padding:0.5rem;
+
+.iconPadding {
+    padding: 0.5rem;
 }
 
-.centerBusy{
-	padding-left: 40%;
-    padding-top:8rem;
+.centerBusy {
+    padding-left: 40%;
+    padding-top: 8rem;
     /*width:20%;*/
-    font-size:20pt;
-    font-family:Calibri,Arial,Helvetica Neue,Helvetica,sans-serif;
+    font-size: 20pt;
+    font-family: Calibri, Arial, Helvetica Neue, Helvetica, sans-serif;
 }
 
 .spinner:before {
-  content: "";
-  box-sizing: border-box;
-  position: absolute;
-  top: 30%;
-  left: 50%;
-  width: 90px;
-  height: 90px;
-  margin-top: -30px;
-  margin-left: -30px;
-  border-radius: 50%;
-  border-top: 6px solid #4285f4;
-  border-right: 6px solid transparent;
-  animation: spinner 1.0s linear infinite;
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    width: 90px;
+    height: 90px;
+    margin-top: -30px;
+    margin-left: -30px;
+    border-radius: 50%;
+    border-top: 6px solid #4285f4;
+    border-right: 6px solid transparent;
+    animation: spinner 1.0s linear infinite;
 }
 
 @keyframes spinner {
-  to {
-    transform: rotate(360deg);
-  }
+    to {
+        transform: rotate(360deg);
+    }
 }
