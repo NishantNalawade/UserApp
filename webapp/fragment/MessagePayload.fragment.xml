@@ -1,21 +1,29 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
 	<Dialog title="Message Payload" stretch="true">
 		<content>
-			<VBox items="{ path: 'messageProperties>/'}" id="messagePayloadFragment" class="sapUiSmallMarginBeginEnd">
-				<VBox class="sapUiSmallMarginTop">
-					<items>
-						<Label text="Message Type"/>
+			<VBox  id="messagePayloadFragment" class="sapUiSmallMarginBeginEnd">
+				
+				<Label text="Message Type"/>
 						<ComboBox items="{ path: 'messageTypes>/MessageTypes'}" change="onMessageSelect" id="selectMessageType" placeholder="Select Message Type">
 						     <core:Item key="{messageTypes>value}" text="{messageTypes>value}"/>
 						</ComboBox>
-						<Label text="{messageProperties>propertyName}" required="{path:'messageProperties>mandatory',formatter:'.mandatoryFormatter'}"/>
-						<Select items="{ path: 'hardwareProperties>/HardwareProp/SensorTag'}" width="100%">
-							<items>
-								<core:Item key="{hardwareProperties>Property}" text="{hardwareProperties>Property}"/>
-							</items>
-						</Select>
-					</items>
-				</VBox>
+			
+						<Toolbar >
+									<Title level="H2" text="Payload Message" class="sapUiSmallMarginBegin sapUiSmallMarginTop"/>
+									<ToolbarSpacer/>
+								</Toolbar>
+								<VBox items="{ path: 'messagePropertiesQr>/'}" id="messagePayloadQr" class="sapUiSmallMarginBeginEnd">
+									<VBox class="sapUiSmallMarginTop">
+										<items>
+											<Label text="{messagePropertiesQr>propertyName}" required="{path:'messagePropertiesQr>mandatory',formatter:'.mandatoryFormatter'}"/>
+											<ComboBox id="payloadCb" items="{ path: 'hardwareProperties>/HardwareProp/SensorTag'}" width="100%">
+												<items>
+													<core:Item key="{hardwareProperties>Property}" text="{hardwareProperties>Property}"/>
+												</items>
+											</ComboBox>
+										</items>
+									</VBox>
+								</VBox>
 			</VBox>
 		</content>
 		<buttons>

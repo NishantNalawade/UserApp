@@ -33,15 +33,7 @@ sap.ui.define([
 			}
 
 		},
-		_getDataFromStorage: function() {
-			jQuery.sap.require("jquery.sap.storage");
-			var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
-			if(oStorage.get("storeDeviceProperties")&&oStorage.get("storeMessageProperties"))
-			{
-			var sDeviceprops = JSON.parse(oStorage.get("storeDeviceProperties"));
-			var oMessageProps = JSON.parse(oStorage.get("storeMessageProperties"));
-			}
-			sDeviceprops.messageProperties=JSON.stringify(oMessageProps);
+		jsonToArrayConverter:function(oMessageProps){
 			var oMessageJson = [];
 			for (var i = 0; i < Object.keys(oMessageProps).length; i++) {
 				var sKey = Object.keys(oMessageProps)[i];
@@ -51,10 +43,29 @@ sap.ui.define([
 				};
 				oMessageJson.push(temp);
 			}
-
+			return oMessageJson;
+		},
+		_getDataFromStorage: function() {
+			jQuery.sap.require("jquery.sap.storage");
+			var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
+			if(oStorage.get("storeDeviceProperties")&&oStorage.get("storeMessageProperties"))
+			{
+			var sDeviceprops = JSON.parse(oStorage.get("storeDeviceProperties"));
+			var oMessageProps = JSON.parse(oStorage.get("storeMessageProperties"));
+			}
+			sDeviceprops.messageProperties=JSON.stringify(oMessageProps);
+			// var oMessageJson = [];
+			// for (var i = 0; i < Object.keys(oMessageProps).length; i++) {
+			// 	var sKey = Object.keys(oMessageProps)[i];
+			// 	var temp = {
+			// 		"propertyName": sKey,
+			// 		"propertyValue": oMessageProps[sKey]
+			// 	};
+			// 	oMessageJson.push(temp);
+			// }
+			var oMessageJson=this.jsonToArrayConverter(oMessageProps);
 			var oModel = new JSONModel();
 			oModel.setData(oMessageJson);
-
 			this.getView().setModel(oModel, "messageProperties");
 			
 			if (sDeviceprops) {
@@ -166,21 +177,26 @@ sap.ui.define([
 		onMessageSelect: function(oEvent){
 				var sMessageType = oEvent.getSource().getSelectedKey();
 				var oModel=new JSONModel(this.oMessagePayloads[sMessageType]);
-				this.getView().setModel(oModel, "messageProperties");
+				this.getView().setModel(oModel, "messagePropertiesQr");
+		},
+		_jsonMessagePayload:function(){
+			var oMessageItems=sap.ui.getCore().byId("messagePayloadQr").getItems();
+			var oMessagePayload={};
+			for(var i=0;i<oMessageItems.length;i++){
+				var sKey=oMessageItems[i].getItems()[0].getText();
+				var sValue=oMessageItems[i].getItems()[1].getValue();
+				oMessagePayload[sKey]=sValue;
+			}
+			return oMessagePayload;
 		},
 		savePayload: function(oEvent) {
-			var oItems = oEvent.getSource().getParent().getContent()[0].getItems();
-			var oProps = this.getView().getModel("messageProperties").getData();
-			var oMessageProperties={};
-			for (var i = 0; i < oItems.length; i++) {
-				var sVal = oItems[i].getItems()[1].getSelectedKey();
-				oProps[i].propertyValue = sVal;
-				oMessageProperties[oProps[i].propertyName]=sVal;
-			}
-			this.oDeviceModel.getData().messageProperties=JSON.stringify(oMessageProperties);
+			var jsonPayload=this._jsonMessagePayload();
+			var messsageProps=this.jsonToArrayConverter(jsonPayload);
 			var oModel = new JSONModel();
-			oModel.setData(oProps);
+			oModel.setData(messsageProps);
 			this.getView().setModel(oModel, "messageProperties");
+			this.getView().getModel("messagePropertiesQr").setData(null);
+			this.getView().getModel("messageTypes").setData(null);
 			this.closeDialog();
 		},
 		closeDialog: function() {
