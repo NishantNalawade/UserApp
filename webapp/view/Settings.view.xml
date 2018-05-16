@@ -36,7 +36,7 @@
 									<VBox class="sapUiSmallMarginTop">
 										<items>
 											<Label text="{messageProperties>propertyName}" required="{path:'messageProperties>mandatory',formatter:'.mandatoryFormatter'}"/>
-											<ComboBox id="payloadCb" items="{ path: 'hardwareProperties>/HardwareProp/SensorTag'}" width="100%">
+											<ComboBox id="payloadCb" selectedKey="Default" items="{ path: 'hardwareProperties>/HardwareProp/SensorTag'}" width="100%">
 												<items>
 													<core:Item key="{hardwareProperties>Property}" text="{hardwareProperties>Property}"/>
 												</items>
