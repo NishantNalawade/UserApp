@@ -2,7 +2,7 @@
 	controllerName="userapp.UserApp.controller.DeviceManager">
 	<App>
 		<pages>
-			<Page title="{tenant>/tenantname}" id="devicePage" navButtonPress="navToDetails">
+			<Page title="" id="devicePage" navButtonPress="navToDetails">
 				<headerContent>
 					<core:Icon class="iconPadding" src="sap-icon://action-settings" press="navSettings"/>
 					<core:Icon class="iconPadding" src="sap-icon://log" press="onLogout"/>
