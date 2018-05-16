@@ -19,7 +19,7 @@
 							</Toolbar>
 						</headerToolbar>
 						<items>
-							<StandardListItem title="{devices>deviceId}" description="{devices>timestamp}" type="Navigation"
+							<StandardListItem title="{devices>deviceId}" description="{path:'devices>timestamp',formatter:'.timeFormatter'}" type="Navigation"
 								icon="{path:'devices>category',formatter:'.iconFormatter'}" press="navToDetails"/>
 						</items>
 					</List>

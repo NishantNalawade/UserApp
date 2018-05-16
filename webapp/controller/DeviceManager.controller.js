@@ -57,7 +57,7 @@ sap.ui.define([
 		},
 		_onRouteMatched: function(oEvent) {
 			this.sTenantId = oEvent.getParameter("arguments").tenantId;
-		//	this._getTenantDetail(this.sTenantId);
+			this._getTenantDetail(this.sTenantId);
 			this._getDeviceDetail(this.sTenantId);
 		},
 		_getTenantDetail: function(sTenantId) {
@@ -105,6 +105,10 @@ sap.ui.define([
 			}
 			return icon;
 
+		},
+		timeFormatter:function(timestamp){
+			var date=new Date(timestamp);
+			return (date.toLocaleString());
 		},
 		onSearch: function(oEvt) {
 
