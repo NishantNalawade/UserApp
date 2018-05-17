@@ -36,11 +36,11 @@
 									<VBox class="sapUiSmallMarginTop">
 										<items>
 											<Label text="{messageProperties>propertyName}" required="{path:'messageProperties>mandatory',formatter:'.mandatoryFormatter'}"/>
-											<ComboBox id="payloadCb" selectedKey="Default" items="{ path: 'hardwareProperties>/HardwareProp/SensorTag'}" width="100%">
+											<Select id="payloadCb" selectedKey="Default" items="{ path: 'hardwareProperties>/HardwareProp/SensorTag',sorter: { path: 'hardwareProperties>Property' }}" width="100%">
 												<items>
 													<core:Item key="{hardwareProperties>Property}" text="{hardwareProperties>Property}"/>
 												</items>
-											</ComboBox>
+											</Select>
 										</items>
 									</VBox>
 								</VBox>

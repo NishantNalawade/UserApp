@@ -177,7 +177,7 @@ sap.ui.define([
 			var oMessagePayload={};
 			for(var i=0;i<oMessageItems.length;i++){
 				var sKey=oMessageItems[i].getItems()[0].getText();
-				var sValue=oMessageItems[i].getItems()[1].getValue();
+				var sValue=oMessageItems[i].getItems()[1].getSelectedKey();
 				oMessagePayload[sKey]=sValue;
 			}
 			return oMessagePayload;
