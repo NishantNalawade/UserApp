@@ -64,11 +64,16 @@ sap.ui.define([
 			var sUrl = "/gatewaytest/tenants/" + sTenantId + "/devices";
 			var oView = this.getView();
 			var that = this;
+			var oList=this.getView().byId("deviceList");
 			$.ajax({
 				url: sUrl,
 				method: 'GET',
 				crossDomain: true,
+				beforeSend:function(){
+					oList.setBusy(true);
+				},
 				success: function(data) {
+					oList.setBusy(false);
 					that.oDeviceModel.setData(data);
 					that.oDeviceModel.refresh();
 					oView.rerender();
@@ -117,6 +122,10 @@ sap.ui.define([
 			if (!sSettings) {
 				this.navSettings();
 			}
+		},
+		refreshDevices:function(){
+			this._getDeviceDetail(this.sTenantId);
+			//sap.m.MessageToast.show("Device list refreshed");
 		}
 	});
 

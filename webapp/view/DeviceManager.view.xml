@@ -14,6 +14,7 @@
 								<content>
 									<SearchField liveChange="onSearch" width="100%"/>
 									<ToolbarSpacer/>
+									<Button icon="sap-icon://synchronize" press="refreshDevices"/>
 									<Button icon="sap-icon://add" press="navOnboard"/>
 								</content>
 							</Toolbar>
