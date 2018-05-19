@@ -14,16 +14,19 @@ sap.ui.define([
 		sDeviceId: null,
 		oPayloadDialog: null,
 		oMessagePayloads:[],
+		oRouter:null,
 		onInit: function() {
-			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-			oRouter.getRoute("DeviceOnboard").attachPatternMatched(this._onRouteMatched, this);
-			//this._getDataFromStorage();
+			this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+			this.oRouter.getRoute("DeviceOnboard").attachPatternMatched(this._onRouteMatched, this);
 			this.getView().setModel(this.oDeviceModel, "QRdata");
 			
 			this._getHardwareProperties();
 		},
 		onAfterRendering: function() {
 			//console.log("hi")
+		},
+		navSettings: function(){
+			this.oRouter.navTo("Settings");
 		},
 		mandatoryFormatter: function(mandatory) {
 			if (mandatory === "true") {
@@ -145,8 +148,8 @@ sap.ui.define([
 			if (sPreviousHash !== undefined) {
 				window.history.go(-1);
 			} else {
-				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-				oRouter.navTo("overview", {}, true);
+				//var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+				this.oRouter.navTo("overview", {}, true);
 			}
 		},
 		onScan: function() {
