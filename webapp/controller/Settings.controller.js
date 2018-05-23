@@ -12,6 +12,8 @@ sap.ui.define([
 		oDeviceTypes: null,
 		oProperties: null,
 		oMessagePayloads:[],
+		oRouter:null,
+		oStorage:null,
 		mandatoryFormatter: function(mandatory) {
 			if(mandatory==="true"){
 				return true;
@@ -22,23 +24,41 @@ sap.ui.define([
 
 		},
 		navBack: function() {
-			var oHistory = History.getInstance();
+			jQuery.sap.require("jquery.sap.storage");
+			var sSettings = this.oStorage.get("storeDeviceProperties");
+			if (!sSettings) {
+				MessageToast.show("Finish Saving your Settings");
+			}
+			else{
+				var oHistory = History.getInstance();
 			var sPreviousHash = oHistory.getPreviousHash();
 			if (sPreviousHash !== undefined) {
 				window.history.go(-1);
 			} else {
-				var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-				oRouter.navTo("overview", {}, true);
+				
+				this.oRouter.navTo("overview", {}, true);
 			}
+			}
+			
 		},
 		onCategorySelect: function(oEvent) {
 			var sCategoryId = oEvent.getSource().getSelectedKey();
 			this._getDeviceTypes(sCategoryId);
 			if (this.getView().getModel("deviceProperties") != null) {
 				this.getView().getModel("deviceProperties").setData(null);
+				this.getView().byId("saveButton").setEnabled(false);
 			}
-				if (this.getView().getModel("messageTypes") != null) {
+			if (this.getView().getModel("messageTypes") != null) {
 				this.getView().getModel("messageTypes").setData(null);
+				this.getView().byId("saveButton").setEnabled(false);
+			}
+			if (this.getView().getModel("deviceTypes") != null) {
+				this.getView().getModel("deviceTypes").setData(null);
+				this.getView().byId("saveButton").setEnabled(false);
+			}
+				if (this.getView().getModel("messageProperties") != null) {
+				this.getView().getModel("messageProperties").setData(null);
+				this.getView().byId("saveButton").setEnabled(false);
 			}
 
 		},
@@ -50,23 +70,52 @@ sap.ui.define([
 			this._getHardwareProperties();
 				if (this.getView().getModel("messageTypes") != null) {
 				this.getView().getModel("messageTypes").setData(null);
+				this.getView().byId("saveButton").setEnabled(false);
 			}
 			if (this.getView().getModel("messageProperties") != null) {
 				this.getView().getModel("messageProperties").setData(null);
+				this.getView().byId("saveButton").setEnabled(false);
 			}
-			this.getView().byId("saveButton").setEnabled(true);
+			
 		},
 			onMessageSelect: function(oEvent){
 				var sMessageType = oEvent.getSource().getSelectedKey();
 				var oModel=new JSONModel(this.oMessagePayloads[sMessageType]);
 				this.getView().setModel(oModel, "messageProperties");
+				this.getView().byId("saveButton").setEnabled(true);
 		},
 		onInit: function() {
 			jQuery.sap.require("jquery.sap.storage");
-			var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
-			this.sTenantId = oStorage.get("storeTenantId");
+			this.oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
+			this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+			this.oRouter.getRoute("Settings").attachPatternMatched(this._onRouteMatched, this);
+			this.sTenantId = this.oStorage.get("storeTenantId");
 
 			this._getCategories();
+		},
+		_onRouteMatched: function(oEvent) {
+			this.sTenantId = this.oStorage.get("storeTenantId");
+			this._getCategories();
+			if(!(this.oStorage.get("storeDeviceProperties")||this.oStorage.get("storeMessageProperties")))
+			{
+				if(this.getView().getModel("messageTypes")){
+				this.getView().getModel("messageTypes").setData(null);
+				}
+				if(this.getView().getModel("deviceTypes")){
+				this.getView().getModel("deviceTypes").setData(null);
+				}
+				if(this.getView().getModel("categories")){
+				this.getView().getModel("categories").setData(null);
+				}
+				if (this.getView().getModel("deviceProperties") != null) {
+				this.getView().getModel("deviceProperties").setData(null);
+		     	}
+		     	if (this.getView().getModel("messageProperties") != null) {
+				this.getView().getModel("messageProperties").setData(null);
+		      	}
+			}
+			
+			
 		},
 		_getCategories: function() {
 			var that = this;
@@ -77,9 +126,7 @@ sap.ui.define([
 				method: 'GET',
 				crossDomain: true,
 				success: function(data) {
-
 					that.oCategories = new JSONModel();
-
 					that.oCategories.setData(data);
 					oView.setModel(that.oCategories, "categories");
 				},
@@ -177,7 +224,7 @@ sap.ui.define([
 			var oMessagePayload={};
 			for(var i=0;i<oMessageItems.length;i++){
 				var sKey=oMessageItems[i].getItems()[0].getText();
-				var sValue=oMessageItems[i].getItems()[1].getSelectedKey();
+				var sValue=oMessageItems[i].getItems()[1].getValue();
 				oMessagePayload[sKey]=sValue;
 			}
 			return oMessagePayload;
@@ -203,9 +250,8 @@ sap.ui.define([
 
 			var jsonPayload=this._jsonMessagePayload();
 			jQuery.sap.require("jquery.sap.storage");
-			var oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local);
-			oStorage.put("storeDeviceProperties", JSON.stringify(oTempJson));
-			oStorage.put("storeMessageProperties",JSON.stringify(jsonPayload));
+			this.oStorage.put("storeDeviceProperties", JSON.stringify(oTempJson));
+			this.oStorage.put("storeMessageProperties",JSON.stringify(jsonPayload));
 			MessageToast.show("Settings Saved");
 
 			this.navBack();

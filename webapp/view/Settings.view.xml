@@ -2,9 +2,9 @@
 	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:f="sap.ui.layout.form">
 	<App>
 		<pages>
-			<Page title="Settings" showNavButton="true" navButtonPress="navBack">
+			<Page id="settingsPage" title="Settings" showNavButton="true" navButtonPress="navBack" enableScrolling="false">
 				<content>
-					<ScrollContainer height="90%" vertical="true">
+					<ScrollContainer height="90%" vertical="true" horizontal="false">
 						<content>
 							<VBox class="sapUiSmallMargin">
 								<f:SimpleForm id="settingsForm" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12"
@@ -36,11 +36,11 @@
 									<VBox class="sapUiSmallMarginTop">
 										<items>
 											<Label text="{messageProperties>propertyName}" required="{path:'messageProperties>mandatory',formatter:'.mandatoryFormatter'}"/>
-											<Select id="payloadCb" selectedKey="Default" items="{ path: 'hardwareProperties>/HardwareProp/SensorTag',sorter: { path: 'hardwareProperties>Property' }}" width="100%">
+											<ComboBox id="payloadCb" selectedKey="Default" items="{ path: 'hardwareProperties>/HardwareProp/SensorTag',sorter: { path: 'hardwareProperties>Property' }}" width="100%">
 												<items>
 													<core:Item key="{hardwareProperties>Property}" text="{hardwareProperties>Property}"/>
 												</items>
-											</Select>
+											</ComboBox>
 										</items>
 									</VBox>
 								</VBox>

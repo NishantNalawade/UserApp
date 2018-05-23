@@ -36,6 +36,72 @@ sap.ui.define([
 			// this.getView().setModel(oModel, "payload");
 			//this.getView().byId("detailsPage").setTitle(sDeviceId);
 		},
+		editDevice:function(oEvent){
+			var uid=this.getView().byId("uidText");
+			var elements=this.getView().byId("payload")._aElements;
+			var i;
+			if(oEvent.getSource().getProperty("src")==="sap-icon://save")
+			{
+				this.updateDevice();
+				uid.setEditable(false);
+			for(i in elements)
+			{
+				if(elements[i] instanceof sap.m.Input)
+				{
+					elements[i] .setEditable(false);
+				}
+			}
+			oEvent.getSource().setProperty("src","sap-icon://edit");
+			this.navBack();
+			MessageToast.show("Device Updated Successfully!");
+			}
+			else{
+			oEvent.getSource().setProperty("src","sap-icon://save");
+			uid.setEditable(true);
+			for(i in elements)
+			{
+				if(elements[i] instanceof sap.m.Input)
+				{
+					elements[i] .setEditable(true);
+				}
+			}
+			}
+		},
+		updateDevice:function(){
+			var uid=this.getView().byId("uidText");
+			var elements=this.getView().byId("payload")._aElements;
+			var key,value,messageprops={};
+			for(var i in elements)
+			{
+				if(elements[i] instanceof sap.m.Input)
+				{
+					value=elements[i].getValue();
+					messageprops[key]=value;
+				}
+				else if(elements[i] instanceof sap.m.Label)
+				{
+					key=elements[i].getText();
+				}
+			}
+			var deviceDetails=this.getView().getModel("deviceDetails").getData();
+			deviceDetails.messageProperties=JSON.stringify(messageprops);
+			deviceDetails.uid=uid.getValue();
+			var sUrl = "/gatewaytest/tenants/" + this.sTenantId + "/devices/" + this.sDeviceId;
+			$.ajax({
+				url: sUrl,
+				method: 'PUT',
+				headers: {
+					"content-type": "application/json"
+				},
+				crossDomain: true,
+				data:JSON.stringify(deviceDetails),
+				success: function(data) {
+				},
+				error: function(e) {
+					
+				}
+			});
+		},
 		addprops: function(that,props,formId) {
 			props = JSON.parse(props);
 			var form = that.getView().byId(formId);

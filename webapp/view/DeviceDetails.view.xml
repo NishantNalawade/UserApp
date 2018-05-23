@@ -3,6 +3,9 @@
 	<App>
 		<pages>
 			<Page title="Details" id="detailsPage" showNavButton="true" navButtonPress="navBack">
+				<headerContent>
+					<core:Icon class="iconPadding" src="sap-icon://edit" press="editDevice"/>
+				</headerContent>
 				<content>
 					<ScrollContainer height="90%" vertical="true">
 						<content>
@@ -12,7 +15,7 @@
 									singleContainerFullSize="false">
 									<f:content>
 										<Label text="uid"/>
-										<Input value="{deviceDetails>/uid}" editable="false"/>
+										<Input id="uidText" value="{deviceDetails>/uid}" editable="false"/>
 										<Label text="Device ID"/>
 										<Input value="{deviceDetails>/deviceId}" editable="false"/>
 										<Label text="Device GUID"/>
