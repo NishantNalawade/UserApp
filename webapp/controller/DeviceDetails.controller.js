@@ -10,13 +10,18 @@ sap.ui.define([
 	return Controller.extend("userapp.UserApp.controller.DeviceDetails", {
 		sTenantId: null,
 		sDeviceId: null,
+		save:false,
 		onInit: function() {
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			oRouter.getRoute("DeviceDetails").attachPatternMatched(this._onRouteMatched, this);
 		},
 
 		navBack: function() {
-			var oHistory = History.getInstance();
+			if(this.save){
+				MessageToast.show("Save Settings before Navigating back");
+			}else
+			{
+				var oHistory = History.getInstance();
 			var sPreviousHash = oHistory.getPreviousHash();
 			if (sPreviousHash !== undefined) {
 				window.history.go(-1);
@@ -25,6 +30,7 @@ sap.ui.define([
 				oRouter.navTo("overview", {}, true);
 			}
 			this.getView().byId("devProps").removeAllContent();
+			}
 			//this.getView().byId("devicePayload").removeAllContent();
 		},
 		_onRouteMatched: function(oEvent) {
@@ -52,11 +58,13 @@ sap.ui.define([
 				}
 			}
 			oEvent.getSource().setProperty("src","sap-icon://edit");
+			this.save=false;
 			this.navBack();
 			MessageToast.show("Device Updated Successfully!");
 			}
 			else{
 			oEvent.getSource().setProperty("src","sap-icon://save");
+			this.save=true;
 			uid.setEditable(true);
 			for(i in elements)
 			{
